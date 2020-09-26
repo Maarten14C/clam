@@ -7,9 +7,9 @@
 calBP.14C(
   yr,
   cc = 1,
-  cc1 = "IntCal20.14C",
-  cc2 = "Marine20.14C",
-  cc3 = "SHCal20.14C",
+  cc1 = "3Col_intcal20.14C",
+  cc2 = "3Col_marine20.14C",
+  cc3 = "3Col_shcal20.14C",
   cc4 = "mixed.14C",
   ccdir = "",
   postbomb = FALSE,

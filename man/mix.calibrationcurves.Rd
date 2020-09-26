@@ -6,8 +6,8 @@
 \usage{
 mix.calibrationcurves(
   proportion = 0.5,
-  cc1 = "IntCal20.14C",
-  cc2 = "Marine20.14C",
+  cc1 = "3Col_intcal20.14C",
+  cc2 = "3Col_marine20.14C",
   name = "mixed.14C",
   dirname = ".",
   offset = c(0, 0),

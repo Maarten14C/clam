@@ -24,8 +24,8 @@
 #' standard deviations or 99.999999 \% of its probability distribution). This range can also be adapted by 
 #' changing the option expand (default \code{expand=0.1}). Probabilities below a threshold (default \code{threshold=1e-6}) will be neglected.
 #' 
-#' By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1, cc1="IntCal20.14C"}). 
-#' To use alternative curves, use \code{cc=2} (\code{cc2="Marine20.14C"}), \code{cc=3} (\code{cc3="SHCal20.14C"}), 
+#' By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1, cc1="3Col_intcal20.14C"}). 
+#' To use alternative curves, use \code{cc=2} (\code{cc2="3Col_marine20.14C"}), \code{cc=3} (\code{cc3="3Col_shcal20.14C"}), 
 #' \code{cc=4} (\code{cc4="mixed.14C"}), or change the file names of \code{cc1, cc2, cc3 or cc4}.
 #'  
 #' Clam works in cal BP (calendar years before AD 1950) by default, but can work with cal BC/AD through the option \code{BCAD=TRUE}. 
@@ -313,8 +313,8 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
 #' @examples
 #'   mix.calibrationcurves(dirname=tempdir())
 #' @export
-mix.calibrationcurves <- function(proportion=.5, cc1="IntCal20.14C", cc2="Marine20.14C", name="mixed.14C", dirname=".", offset=c(0,0), sep="\t") {
-  ccloc <- normalizePath(system.file("extdata/", package='clam')) 
+mix.calibrationcurves <- function(proportion=.5, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", name="mixed.14C", dirname=".", offset=c(0,0), sep="\t") {
+  ccloc <- normalizePath(system.file("extdata/", package='IntCal')) 
   dirname <- .validateDirectoryName(dirname)
   
   cc1 <- read.table(normalizePath(paste(ccloc, "/", cc1,  sep="")))
@@ -365,9 +365,8 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
   ccdir <-.validateDirectoryName(ccdir)
   # set the calibration curve
   if(ccdir=="")
-    ccdir = paste(system.file("extdata", package=packageName()), "/", sep="")
+    ccdir = paste(system.file("extdata", package="IntCal"), "/", sep="")
 
-  
   if(cc == 0)
   {
     x <- seq(y-(times*error), y+(times*error), length=500)
@@ -383,14 +382,18 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
   } else
   {
     
-    if(cc1=="IntCal20") cc1 <- read.table(paste(ccdir, "IntCal20.14C",  sep="")) else
+    if(cc1=="IntCal20") cc1 <- read.table(paste0(ccdir, "3Col_intcal20.14C")) else
       cc1 <- read.csv(paste(ccdir, cc1,  sep=""))[,1:3]
-    if(cc2=="Marine20") cc2 <- read.table(paste(ccdir, "Marine20.14C",  sep="")) else
+    if(cc2=="Marine20") cc2 <- read.table(paste0(ccdir, "3Col_marine20.14C")) else
       cc2 <- read.csv(paste(ccdir, cc2,  sep=""))[,1:3]
-    if(cc3=="SHCal20") cc3 <- read.table(paste(ccdir, "SHCal20.14C",  sep="")) else
+    if(cc3=="SHCal20") cc3 <- read.table(paste0(ccdir, "3Col_shcal20.14C")) else
       cc3 <- read.table(paste(ccdir, cc3,  sep=""))[,1:3]
-    if(cc4=="mixed") cc4 <- read.table(paste(ccdir, "mixed.14C",  sep="")) else
-      cc4 <- read.table(paste(ccdir, cc4,  sep=""))[,1:3]
+    if(cc4=="mixed") {
+      fl <- paste0(ccdir, "mixed.14C")
+      if(file.exists(fl))
+        cc4 <- read.table(paste0(ccdir, "mixed.14C")) 
+      } else
+        cc4 <- read.table(paste0(ccdir, cc4))[,1:3]
     if(cc==1) cc <- cc1 else if(cc==2) cc <- cc2 else if(cc==3) cc <- cc3 else cc <- cc4
 
     if (y < 0)
@@ -463,11 +466,11 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
 #' calBP.14C(100) 
 #' 
 #' @export
-calBP.14C <- function(yr, cc=1, cc1="IntCal20.14C", cc2="Marine20.14C", cc3="SHCal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C") {
+calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C") {
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "")
-    ccdir = paste(system.file("extdata", package=packageName()), "/", sep="")
+    ccdir = paste(system.file("extdata", package="IntCal"), "/", sep="")
 
   # set calibration curve
   if(cc==1) calcurve <- read.table(paste(ccdir, cc1,  sep="")) else

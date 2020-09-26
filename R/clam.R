@@ -48,8 +48,8 @@ NULL
 #'
 #' Age-models for the core can then be produced by typing, e.g., \code{clam("MyCore1")}.
 #'
-#' By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1}, \code{cc1="IntCal20.14C"}). 
-#' To use alternative curves, change \code{cc} to \code{cc=2 (cc2="Marine20.14C")}, \code{cc=3 (cc3="SHCal20.14C")}, \code{cc=4 (cc4="mixed.14C")}. 
+#' By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1}, \code{cc1="3Col_intcal20.14C"}). 
+#' To use alternative curves, change \code{cc} to \code{cc=2 (cc2="3Col_marine20.14C")}, \code{cc=3 (cc3="3Col_shcal20.14C")}, \code{cc=4 (cc4="mixed.14C")}. 
 #' You can also provide custom-built calibration curves, indicating its location using \code{ccdir}.
 #'
 #' The provided example (default \code{core="Example"}) is core Quilichao-1 which was sampled from a Colombian lake (Berrio et al., 2002). 
@@ -227,19 +227,19 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   Gates <- list.files(paste(coredir, core, sep=""), pattern=".csv.txt")
   if(length(Gates) > 0) {
     cat("\nRemoving unnecessary .txt extension from .csv file", Gates[1], "\n")
-    file.rename(paste(coredir, core, "/", core, ".csv.txt", sep=""),
-      paste(coredir, core, "/", core, ".csv", sep=""))
+    file.rename(paste0(coredir, core, "/", core, ".csv.txt"),
+      paste0(coredir, core, "/", core, ".csv"))
   }
 
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "") # so, if no alternative folder provided, use clam's calibration curves
-    ccdir = paste(system.file("extdata", package=packageName()), "/", sep="")
+    ccdir = paste0(system.file("extdata", package="IntCal"), "/")
     
-  if(cc==1) calcurve <- read.table(paste(ccdir, cc1,  sep="")) else
-    if(cc==2) calcurve <- read.table(paste(ccdir, cc2,  sep="")) else
-      if(cc==3) calcurve <- read.table(paste(ccdir, cc3,  sep="")) else
-        if(cc==4) calcurve <- read.table(paste(ccdir, cc4,  sep="")) else
+  if(cc==1) calcurve <- read.table(paste0(ccdir, cc1)) else
+    if(cc==2) calcurve <- read.table(paste0(ccdir, cc2)) else
+      if(cc==3) calcurve <- read.table(paste0(ccdir, cc3)) else
+        if(cc==4) calcurve <- read.table(paste0(ccdir, cc4)) else
           stop("I do not understand which calibration curve you mean, check the manual", call.=FALSE)
   if(cc==1) ccname <- cc1 else
     if(cc==2) ccname <- cc2 else
