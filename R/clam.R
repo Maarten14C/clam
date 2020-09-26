@@ -9,6 +9,7 @@
 #' @importFrom graphics abline image layout legend lines par plot points polygon rect
 #' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
 #' @importFrom utils read.csv read.table write.table packageName
+#' @import IntCal
 #' @name clam
 NULL  
 
@@ -195,7 +196,7 @@ NULL
 #' Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. Quaternary Geochronology 5, 512-518
 #' \url{http://dx.doi.org/10.1016/j.quageo.2010.01.002}
 #' @export
-clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, coredir=NULL, ask=TRUE, wghts=1, cc=1, cc1="IntCal20.14C", cc2="Marine20.14C", cc3="SHCal20.14C", cc4="mixed.14C",  postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C",pb5="postbomb_SH3.14C", ccdir="", outliers=NULL, ignore=NULL, youngest=NULL, extradates=NULL, slump=NULL, est=1, calibt=FALSE, mixed.effect=FALSE, dmin=NULL, dmax=NULL, every=1, yrmin=NULL, yrmax=NULL, yrsteps=1, pbsteps=0.01, hpdsteps=1, BCAD=FALSE, decimals=0, cmyr=FALSE, ageofdepth=NULL, depth="cm", depthseq=NULL, depths.file=FALSE, thickness=1, hiatus=NULL, remove.reverse=0.5, times=5, sep=",", ext=".csv", runname=NULL, storedat=TRUE, threshold=1e-6, proxies=FALSE, revaxes=FALSE, revd=TRUE, revyr=TRUE, calhght=0.3, maxhght=0.01, mirror=TRUE, plotrange=TRUE, bty="l", mar=c(3.5,3,2,1), mgp=c(2,1,0), plotpdf=TRUE, plotpng=TRUE, greyscale=NULL, yrlab=NULL, dlab=NULL, calcol=rgb(0,0.5,0.5,0.5), C14col=rgb(0,0,1,0.5), outcol="red", outlsize=1, bestcol="black", rangecol=rgb(0,0,0,0.3), slumpcol=grey(0.75), plotname=TRUE, ash=FALSE) {
+clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, coredir=NULL, ask=TRUE, wghts=1, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C",  postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C",pb5="postbomb_SH3.14C", ccdir="", outliers=NULL, ignore=NULL, youngest=NULL, extradates=NULL, slump=NULL, est=1, calibt=FALSE, mixed.effect=FALSE, dmin=NULL, dmax=NULL, every=1, yrmin=NULL, yrmax=NULL, yrsteps=1, pbsteps=0.01, hpdsteps=1, BCAD=FALSE, decimals=0, cmyr=FALSE, ageofdepth=NULL, depth="cm", depthseq=NULL, depths.file=FALSE, thickness=1, hiatus=NULL, remove.reverse=0.5, times=5, sep=",", ext=".csv", runname=NULL, storedat=TRUE, threshold=1e-6, proxies=FALSE, revaxes=FALSE, revd=TRUE, revyr=TRUE, calhght=0.3, maxhght=0.01, mirror=TRUE, plotrange=TRUE, bty="l", mar=c(3.5,3,2,1), mgp=c(2,1,0), plotpdf=TRUE, plotpng=TRUE, greyscale=NULL, yrlab=NULL, dlab=NULL, calcol=rgb(0,0.5,0.5,0.5), C14col=rgb(0,0,1,0.5), outcol="red", outlsize=1, bestcol="black", rangecol=rgb(0,0,0,0.3), slumpcol=grey(0.75), plotname=TRUE, ash=FALSE) {
   # If coredir is left empty, check for a folder named Cores in the current working directory, and if this doesn't exist, for a folder called clam_runs (make this folder if it doesn't exist yet).
   # Check if we have write access. If not, tell the user to provide a different, writeable location for coredir. 
 
@@ -208,7 +209,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
  
   # set the calibration curve
   if(ccdir == "")
-    ccdir <- system.file("extdata", package=packageName()) 
+    ccdir <- system.file("extdata", package="IntCal") 
 
   # warn and stop if unexpected settings are provided
   if(type > 5 || type < 1 || prob < 0 || prob > 1 || its < 100 || wghts < 0 || wghts > 1 || est < 1 || est > 7 || yrsteps <= 0 || hpdsteps <= 0 || every <= 0 || decimals < 0 || cmyr < 0 || cmyr > 1 || thickness < 0 || times < 1 || calhght < 0 || (type==5 && length(hiatus)>0))

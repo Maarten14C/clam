@@ -132,11 +132,11 @@
 #' calibrate(cage=130, error=20)
 #' calibrate(4450, 40, reservoir=c(100, 50))
 #' @export
-calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="IntCal20.14C", cc2="Marine20.14C", cc3="SHCal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", yrsteps=1, pbsteps=0.01, hpdsteps=1, calibt=FALSE, yrmin=NULL, yrmax=NULL, minC14=NULL, maxC14=NULL, times=5, calheight=0.3, expand=0.1, threshold=1e-6, storedat=FALSE, graph=TRUE, xlab=NULL, ylab=NULL, BCAD=FALSE, mar=c(3.5,3,2,1), mgp=c(1.7,.8,0), bty="l", xaxs="i", yaxs="i", title=NULL, date.col="red", cc.col=rgb(0,.5,0,0.7), dist.col=rgb(0,0,0,0.3), sd.col=rgb(0,0,0,0.5)) {
+calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", yrsteps=1, pbsteps=0.01, hpdsteps=1, calibt=FALSE, yrmin=NULL, yrmax=NULL, minC14=NULL, maxC14=NULL, times=5, calheight=0.3, expand=0.1, threshold=1e-6, storedat=FALSE, graph=TRUE, xlab=NULL, ylab=NULL, BCAD=FALSE, mar=c(3.5,3,2,1), mgp=c(1.7,.8,0), bty="l", xaxs="i", yaxs="i", title=NULL, date.col="red", cc.col=rgb(0,.5,0,0.7), dist.col=rgb(0,0,0,0.3), sd.col=rgb(0,0,0,0.5)) {
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "")
-    ccdir = paste(system.file("extdata", package=packageName()), "/", sep="")
+    ccdir = paste(system.file("extdata", package="IntCal"), "/", sep="")
 
   # set calibration curve
   if(cc==1) calcurve <- read.table(paste(ccdir, cc1,  sep="")) else
@@ -295,38 +295,6 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="In
 
 
 
-#' @name copyCalibrationCurve
-#' @title Copy a calibration curve.
-#' @description Copy one of the the calibration curves into memory. 
-#' @details Copy the radiocarbon calibration curve defined by cc into memory. 
-#' @return The calibration curve (invisible).
-#' @param cc Calibration curve for 14C dates: \code{cc=1} for IntCal20 (northern hemisphere terrestrial), \code{cc=2} for Marine20 (marine), 
-#' \code{cc=3} for SHCal20 (southern hemisphere terrestrial). 
-#' @param postbomb Use \code{postbomb=TRUE} to get a postbomb calibration curve (default \code{postbbomb=FALSE}).
-#' @author Maarten Blaauw, J. Andres Christen
-#' @examples 
-#' intcal20 <- copyCalibrationCurve(1)
-#' @export
-copyCalibrationCurve <- function(cc=1, postbomb=FALSE) {
-  if(postbomb) {
-    if(cc==1) fl <- "postbomb_NH1.14C" else
-      if(cc==2) fl <- "postbomb_NH2.14C" else
-        if(cc==3) fl <- "postbomb_NH3.14C" else
-          if(cc==4) fl <- "postbomb_SH1-2.14C" else 
-            if(cc==5) fl <- "postbomb_SH3.14C" else  
-              stop("Calibration curve doesn't exist\n")		       
-  } else
-  if(cc==1) fl <- "IntCal20.14C" else
-    if(cc==2) fl <- "Marine20.14C" else
-      if(cc==3) fl <- "SHCal20.14C" else
-        stop("Calibration curve doesn't exist\n") 		 
-  cc <- system.file("extdata", fl, package='clam')
-  cc <- read.table(cc)
-  invisible(cc)
-}
-
-
-
 #' @name mix.calibrationcurves
 #' @title Build a custom-made, mixed calibration curve. 
 #' @description If two curves need to be 'mixed' to calibrate, e.g. for dates of mixed terrestrial and marine carbon sources, then this function can be used. 
@@ -360,50 +328,7 @@ mix.calibrationcurves <- function(proportion=.5, cc1="IntCal20.14C", cc2="Marine
 }
 
 
-#' @name pMC.age
-#' @title Calculate C14 ages from pmC values.
-#' @description Calculate C14 ages from pmC values of radiocarbon dates.
-#' @details Post-bomb dates are often reported as pMC or percent modern carbon. Since Bacon expects radiocarbon ages,
-#'  this function can be used to calculate radiocarbon ages from pMC values. The reverse function is \link{age.pMC}.
-#' @param mn Reported mean of the pMC.
-#' @param sdev Reported error of the pMC.
-#' @param ratio Most modern-date values are reported against \code{100}. If it is against \code{1} instead, use \code{1} here.
-#' @param decimals Amount of decimals required for the radiocarbon age.
-#' @author Maarten Blaauw, J. Andres Christen
-#' @return Radiocarbon ages from pMC values. If pMC values are above 100\%, the resulting radiocarbon ages will be negative.
-#' @examples
-#'   pMC.age(110, 0.5) # a postbomb date, so with a negative 14C age
-#'   pMC.age(80, 0.5) # prebomb dates can also be calculated
-#'   pMC.age(.8, 0.005, 1) # pMC expressed against 1 (not against 100\%)
-#' @export
-pMC.age <- function(mn, sdev, ratio=100, decimals=0) {
-  y <- -8033 * log(mn/ratio)
-  sdev <- y - -8033 * log((mn+sdev)/ratio)
-  round(c(y, sdev), decimals)
-}
 
-
-
-#' @name age.pMC
-#' @title Calculate pMC values from C14 ages
-#' @description Calculate pMC values from radiocarbon ages
-#' @details Post-bomb dates are often reported as pMC or percent modern carbon. Since Bacon expects radiocarbon ages, 
-#' this function can be used to calculate pMC values from radiocarbon ages. The reverse function of \link{pMC.age}.
-#' @param mn Reported mean of the 14C age.
-#' @param sdev Reported error of the 14C age.
-#' @param ratio Most modern-date values are reported against \code{100}. If it is against \code{1} instead, use \code{1} here.
-#' @param decimals Amount of decimals required for the pMC value.
-#' @author Maarten Blaauw, J. Andres Christen
-#' @return pMC values from C14 ages.
-#' @examples
-#'   age.pMC(-2000, 20)
-#'   age.pMC(-2000, 20, 1)
-#' @export
-age.pMC <- function(mn, sdev, ratio=100, decimals=3) {
-  y <- exp(-mn / 8033)
-  sdev <- y - exp(-(mn + sdev) / 8033)
-  signif(ratio*c(y, sdev), decimals)
-}
 
 
 
