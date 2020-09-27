@@ -306,8 +306,8 @@ These files can be made in spreadsheet software such as MS-Excel, but it is alwa
 
 Age-models for the core can then be produced by typing, e.g., \code{clam("MyCore1")}.
 
-By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1}, \code{cc1="IntCal20.14C"}). 
-To use alternative curves, change \code{cc} to \code{cc=2 (cc2="Marine20.14C")}, \code{cc=3 (cc3="SHCal20.14C")}, \code{cc=4 (cc4="mixed.14C")}. 
+By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1}, \code{cc1="3Col_intcal20.14C"}). 
+To use alternative curves, change \code{cc} to \code{cc=2 (cc2="3Col_marine20.14C")}, \code{cc=3 (cc3="3Col_shcal20.14C")}, \code{cc=4 (cc4="mixed.14C")}. 
 You can also provide custom-built calibration curves, indicating its location using \code{ccdir}.
 
 The provided example (default \code{core="Example"}) is core Quilichao-1 which was sampled from a Colombian lake (Berrio et al., 2002). 

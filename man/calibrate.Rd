@@ -166,8 +166,8 @@ for every single calendar year (\code{yrsteps=1}) within a wide range of the 14C
 standard deviations or 99.999999 \% of its probability distribution). This range can also be adapted by 
 changing the option expand (default \code{expand=0.1}). Probabilities below a threshold (default \code{threshold=1e-6}) will be neglected.
 
-By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1, cc1="IntCal20.14C"}). 
-To use alternative curves, use \code{cc=2} (\code{cc2="Marine20.14C"}), \code{cc=3} (\code{cc3="SHCal20.14C"}), 
+By default the northern hemisphere terrestrial calibration curve is used (\code{cc=1, cc1="3Col_intcal20.14C"}). 
+To use alternative curves, use \code{cc=2} (\code{cc2="3Col_marine20.14C"}), \code{cc=3} (\code{cc3="3Col_shcal20.14C"}), 
 \code{cc=4} (\code{cc4="mixed.14C"}), or change the file names of \code{cc1, cc2, cc3 or cc4}.
  
 Clam works in cal BP (calendar years before AD 1950) by default, but can work with cal BC/AD through the option \code{BCAD=TRUE}. 

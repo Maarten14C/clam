@@ -5,8 +5,9 @@
 #' 
 #' @docType package
 #' @author Maarten Blaauw <maarten.blaauw@qub.ac.uk>
+#' @importFrom base plot
 #' @importFrom grDevices dev.off grey rgb pdf png
-#' @importFrom graphics abline image layout legend lines par plot points polygon rect
+#' @importFrom graphics abline image layout legend lines par points polygon rect
 #' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
 #' @importFrom utils read.csv read.table write.table packageName
 #' @import IntCal
