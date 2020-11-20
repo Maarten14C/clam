@@ -2,6 +2,7 @@
 # the probability of a year being sampled is proportional to its calibrated probability
 .smpl <- function(its, depths, calibs, Est) {
   smp <- array(1, dim=c(length(depths), 1+its, 2))
+  #cat("\nEst=", length(Est), dim(smp), "\n")
   smp[,1,1] <- Est
   for(i in 1:length(calibs)) {
     thiscalib <- as.matrix(calibs[[i]], ncol=2) 
@@ -82,7 +83,6 @@
     if(length(smooth)==0)
       cat(" Using linear regression, sampling") else
       cat(paste(" Using polynomial regression (degree ", smooth, "), sampling", sep=""))
-  #	if(wghts==0) w <- c() else w <- 1/errors^2 
 	if(wghts==0) w <- NULL else w <- 1/errors^2
     for(i in 1:its)
       {

@@ -1,6 +1,6 @@
 
 # read the data and perform first calculations incl. calibrations
-.read.clam <- function(name, namedir,ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb)
+.read.clam <- function(name, namedir,ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb, rule=1)
   {
     coredir=paste(namedir, name, "/", sep="")
 	if(!file.exists(paste(namedir, name, sep="")))
@@ -12,7 +12,7 @@
     # read the file with the dating information
     dat <- list(coredir=coredir, name=name, calib=list(), ignore=NULL, ID=character(nrow(dets)), cage=numeric(nrow(dets)), 
     error=numeric(nrow(dets)), f.cage=numeric(nrow(dets)), f.error=numeric(nrow(dets)), outside=NULL, cal=NULL, res=NULL, depth=NULL, thick=NULL, BCAD=NULL,
-    hpd=list(), mid1=numeric(nrow(dets)), mid2=numeric(nrow(dets)), wmn=numeric(nrow(dets)), med=numeric(nrow(dets)), mode=numeric(nrow(dets))) 
+    hpd=list(), mid1=NULL, mid2=NULL, wmn=NULL, med=NULL, mode=NULL) 
 
     # ignore dates if required, add thickness column if it was left out
     if(length(ignore) > 0)
@@ -25,8 +25,7 @@
       dets[is.na(dets[,7]),7] <- thickness
 
     # should slumps be taken into account?
-    if(length(slump) > 0)
-      {
+    if(length(slump) > 0) {
         d.adapt <- dets[,6]
         #d.lost <- c()
         d.lost <- NULL # has to be NULL since we don't know this var's final size
@@ -76,13 +75,14 @@
             dat$cage[outside[i]]+times*dat$error[outside[i]] > rangecc[2]))
               truncate <- truncate + 1
         if(truncate > 0)
-          cat("\n Warning, dates spanning beyond the calibration curve will be truncated! ")
+          cat("\n Warning, some dates lie partly outside the calibration curve! ")
 
         # remove dates which lie entirely outside the limits of the calibration curve
         outside <- outside[c(which(dat$cage[outside]+qnorm(1-(1-prob)/2)*dat$error[outside] < rangecc[1]), which(dat$cage[outside]-qnorm(1-(1-prob)/2)*dat$error[outside] > rangecc[2]))]
-        if(length(outside) > 0)
+        if(length(outside) > 0) # should this be removed?
           {
-            cat("\n Warning, dates older than the calibration curve will be ignored! ")
+			  outside <- 0 # tmp
+			cat("\n Warning, some dates lie entirely outside the calibration curve! ")
             dets <- dets[-outside,]
             dat$cage <- dat$cage[-outside]
             dat$error <- dat$error[-outside]
@@ -115,29 +115,29 @@
                 ageseq <- seq(age-(times*error), age+(times*error), by=yrsteps)
                 calib <- cbind(ageseq, dnorm(ageseq, age, error))
               } else
-                calib <- .caldist(dat$f.cage[[i]], dat$f.error[[i]], theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD)
-        if(length(youngest) > 0) # truncate ages younger than a limit
-          {
-            if(BCAD) calib <- calib[which(calib[,1] <= youngest),] else
-              calib <- calib[which(calib[,1] >= youngest),]
-            if(length(calib) == 0)
-              if(BCAD)
-                calib <- cbind(seq(youngest-(3*yrsteps), youngest+yrsteps, length=5), c(0:3,0)/3) else
-                calib <- cbind(seq(youngest-yrsteps, youngest+(3*yrsteps), length=5), c(0,3:0)/3)
-          }
+                calib <- .caldist(dat$f.cage[[i]], dat$f.error[[i]], theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD, rule=rule)
+         if(length(youngest) > 0) # truncate ages younger than a limit
+           {
+             if(BCAD) calib <- calib[which(calib[,1] <= youngest),] else
+               calib <- calib[which(calib[,1] >= youngest),]
+             if(length(calib) == 0)
+               if(BCAD)
+                 calib <- cbind(seq(youngest-(3*yrsteps), youngest+yrsteps, length=5), c(0:3,0)/3) else
+                 calib <- cbind(seq(youngest-yrsteps, youngest+(3*yrsteps), length=5), c(0,3:0)/3)
+           }
         dat$calib[[i]] <- calib  
-        dat$hpd[[i]] <- .hpd(calib, prob=prob, hpdsteps=hpdsteps, yrsteps=yrsteps)
-        dat$mid1[[i]] <- (dat$hpd[[i]][1] + dat$hpd[[i]][2*nrow(dat$hpd[[i]])])/2
+        dat$hpd[[i]] <- .hpd(calib, prob=prob, hpdsteps=hpdsteps, yrsteps=yrsteps, rule=rule)
+        dat$mid1[i] <- (dat$hpd[[i]][1] + dat$hpd[[i]][2*nrow(dat$hpd[[i]])])/2
         yrs <- calib[,1]
-        dat$mid2[[i]] <- mean(c(max(yrs), min(yrs)))
-        dat$wmn[[i]] <- weighted.mean(calib[,1], 1/calib[,2])
-        dat$med[[i]] <- calib[max(which(cumsum(calib[,2]) <= .5)),1]
-        dat$mode[[i]] <- calib[which(calib[,2] == max(calib[,2])),1][1]
+        dat$mid2[i] <- mean(c(max(yrs), min(yrs)))
+        dat$wmn[i] <- weighted.mean(calib[,1], 1/calib[,2])
+        dat$med[i] <- calib[max(which(cumsum(calib[,2]) <= .5)),1]
+        dat$mode[i] <- calib[which(calib[,2] == max(calib[,2])),1][1]
       }
-
+      
     if(storedat)
 	  dets <<- dets
-    dat
+    return(dat) # was dat Nov 2020
   }
 
 

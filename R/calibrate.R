@@ -121,6 +121,7 @@
 #' @param cc.col Colour of the calibration curve. Defaults to semi-transparent dark green; \code{cc.col=rgb(0,.5,0,0.7)}.
 #' @param dist.col Colour of the calibrated distribution.
 #' @param sd.col Colour of calibrated range.
+#' @param rule How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.
 #' @author Maarten Blaauw
 #' @return A graph of the raw and calibrated C-14 date, the calibrated ranges and, invisibly, the calibrated ranges and probabilities.
 #' @examples 
@@ -132,7 +133,7 @@
 #' calibrate(cage=130, error=20)
 #' calibrate(4450, 40, reservoir=c(100, 50))
 #' @export
-calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", yrsteps=1, pbsteps=0.01, hpdsteps=1, calibt=FALSE, yrmin=NULL, yrmax=NULL, minC14=NULL, maxC14=NULL, times=5, calheight=0.3, expand=0.1, threshold=1e-6, storedat=FALSE, graph=TRUE, xlab=NULL, ylab=NULL, BCAD=FALSE, mar=c(3.5,3,2,1), mgp=c(1.7,.8,0), bty="l", xaxs="i", yaxs="i", title=NULL, date.col="red", cc.col=rgb(0,.5,0,0.7), dist.col=rgb(0,0,0,0.3), sd.col=rgb(0,0,0,0.5)) {
+calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", yrsteps=1, pbsteps=0.01, hpdsteps=1, calibt=FALSE, yrmin=NULL, yrmax=NULL, minC14=NULL, maxC14=NULL, times=5, calheight=0.3, expand=0.1, threshold=1e-6, storedat=FALSE, graph=TRUE, xlab=NULL, ylab=NULL, BCAD=FALSE, mar=c(3.5,3,2,1), mgp=c(1.7,.8,0), bty="l", xaxs="i", yaxs="i", title=NULL, date.col="red", cc.col=rgb(0,.5,0,0.7), dist.col=rgb(0,0,0,0.3), sd.col=rgb(0,0,0,0.5), rule=1) {
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "")
@@ -160,8 +161,8 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
     if(length(pb) > 0) {
       pb <- read.table(system.file("extdata", pb, package=packageName()))
       pb.x <- seq(min(pb[,1]), max(pb[,1]), by=yrsteps)
-      pb.y <- approx(pb[,1], pb[,2], pb.x)$y
-      pb.sd <- approx(pb[,1], pb[,3], pb.x)$y
+      pb.y <- approx(pb[,1], pb[,2], pb.x, rule=rule)$y
+      pb.sd <- approx(pb[,1], pb[,3], pb.x, rule=rule)$y
       calcurve <- cbind(c(pb.x, calcurve[,1]), c(pb.y, calcurve[,2]), c(pb.sd, calcurve[,3]))
     }
     cat("  postbomb date, interpolating to every", pbsteps, "yr.")
@@ -189,8 +190,8 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
     theta <- 1950-calcurve[,1]
     ad <- max(which(theta > 0)) # one side of the border between AD and BC
     theta <- c(theta[1:(ad-1)], theta[ad]:theta[ad+2], theta[(ad+3):length(theta)])
-   	mu <- approx(1950-calcurve[,1], calcurve[,2], theta)$y
-    sigma <- approx(1950-calcurve[,1], calcurve[,3], theta)$y
+   	mu <- approx(1950-calcurve[,1], calcurve[,2], theta, rule=rule)$y
+    sigma <- approx(1950-calcurve[,1], calcurve[,3], theta, rule=rule)$y
     theta[theta <= 0] <- theta[theta <= 0] - 1
     calcurve <- cbind(theta, mu, sigma)
   } else 
@@ -203,7 +204,7 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
   # calibrate the date and report its highest posterior density (hpd) range
   if(length(xlab) == 0)
   xlab <- ifelse(BCAD, "cal BC/AD", "cal BP")
-  calib <- .caldist(f.cage, f.error, theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD)
+  calib <- .caldist(f.cage, f.error, theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD, rule=rule)
   hpd <- .hpd(calib, prob, hpdsteps, yrsteps)
   colnames(hpd) <- c("yrmin", "yrmax", "prob")
   dat <- list(calib=calib, hpd=hpd)
@@ -308,19 +309,20 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
 #' the new curve will be saved in current working directory. 
 #' @param offset Any offset and error to be applied to \code{cc2} (default 0 +- 0).
 #' @param sep Separator between fields (tab by default, "\\t") 
+#' @param rule How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.
 #' @author Maarten Blaauw, J. Andres Christen
 #' @return A file containing the custom-made calibration curve, based on calibration curves \code{cc1} and \code{cc2}.
 #' @examples
 #'   mix.calibrationcurves(dirname=tempdir())
 #' @export
-mix.calibrationcurves <- function(proportion=.5, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", name="mixed.14C", dirname=".", offset=c(0,0), sep="\t") {
+mix.calibrationcurves <- function(proportion=.5, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", name="mixed.14C", dirname=".", offset=c(0,0), sep="\t", rule=1) {
   ccloc <- normalizePath(system.file("extdata/", package='IntCal')) 
   dirname <- .validateDirectoryName(dirname)
   
   cc1 <- read.table(normalizePath(paste(ccloc, "/", cc1,  sep="")))
   cc2 <- read.table(normalizePath(paste(ccloc, "/", cc2,  sep="")))
-  cc2.mu <- approx(cc2[,1], cc2[,2], cc1[,1], rule=2)$y + offset[1] # interpolate cc2 to the calendar years of cc1
-  cc2.error <- approx(cc2[,1], cc2[,3], cc1[,1], rule=2)$y
+  cc2.mu <- approx(cc2[,1], cc2[,2], cc1[,1], rule=rule)$y + offset[1] # interpolate cc2 to the calendar years of cc1
+  cc2.error <- approx(cc2[,1], cc2[,3], cc1[,1], rule=rule)$y
   cc2.error <- sqrt(cc2.error^2 + offset[2]^2)
   mu <- proportion * cc1[,2] + (1-proportion) * cc2.mu
   error <- proportion * cc1[,3] + (1-proportion) * cc2.error
@@ -355,12 +357,13 @@ mix.calibrationcurves <- function(proportion=.5, cc1="3Col_intcal20.14C", cc2="3
 #' Use \code{ccdir="."} to choose current working directory. Use \code{ccdir="Curves/"} to choose sub-folder \code{Curves/}.
 #' @param Cutoff Threshold above which calibrated probabilities are plotted
 #' @param times 8 by default.
+#' @param rule How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.
 #' @author Maarten Blaauw
 #' @examples 
 #' student.t() 
 #' 
 #' @export
-student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="",Cutoff=1e-5, times=8)
+student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="",Cutoff=1e-5, times=8, rule=1)
 {
   ccdir <-.validateDirectoryName(ccdir)
   # set the calibration curve
@@ -410,8 +413,8 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
                 stop("Warning, cannot find postbomb curve #", postbomb, " (use values of 1 to 5 only)")
               
       bomb.x <- seq(max(bomb[, 1]), min(bomb[, 1]), length = 500)
-      bomb.y <- approx(bomb[, 1], bomb[, 2], bomb.x)$y
-      bomb.z <- approx(bomb[, 1], bomb[, 3], bomb.x)$y
+      bomb.y <- approx(bomb[, 1], bomb[, 2], bomb.x, rule=rule)$y
+      bomb.z <- approx(bomb[, 1], bomb[, 3], bomb.x, rule=rule)$y
       bomb <- cbind(bomb.x, bomb.y, bomb.z, deparse.level = 0)
       #if (info$postbomb < 4) #JEV warning
       if (postbomb < 4) 
@@ -461,12 +464,13 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
 #' @param pb3 For Northern hemisphere region 3 postbomb C-14 dates.
 #' @param pb4 For Southern hemisphere regions 1-2 postbomb C-14 dates.
 #' @param pb5 For Southern hemisphere region 3 postbomb C-14 dates.
+#' @param rule How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.
 #' @author Maarten Blaauw
 #' @examples 
 #' calBP.14C(100) 
 #' 
 #' @export
-calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C") {
+calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", ccdir="", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", rule=1) {
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "")
@@ -493,14 +497,14 @@ calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C"
     if(length(pb) > 0) 
       calcurve <- read.table(system.file("extdata", pb, package=packageName()))	
   }
-  mu <- approx(calcurve[,1], calcurve[,2], yr, rule=1)$y
-  er <- approx(calcurve[,1], calcurve[,3], yr, rule=1)$y
+  mu <- approx(calcurve[,1], calcurve[,2], yr, rule=rule)$y
+  er <- approx(calcurve[,1], calcurve[,3], yr, rule=rule)$y
   return(c(mu, er))
 }
  
 
 # find the calibrated distributions of 14C dates
-.caldist <- function(f.cage, f.error, theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD, normalise=FALSE)
+.caldist <- function(f.cage, f.error, theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD, normalise=FALSE, rule=rule)
   {
     if(f.cage > 1)
       {
@@ -508,8 +512,8 @@ calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C"
         pb <- theta[which(f.mu > 1)]
         if(length(pb)==0)
           stop("help, something exploded with a postbomb date")
-        x <- approx(theta, f.mu, seq(min(pb), max(pb), by=yrsteps))
-        xsd <- approx(theta, f.sigma, x$x)$y
+        x <- approx(theta, f.mu, seq(min(pb), max(pb), by=yrsteps), rule=2) # Nov 2020 added rule=1
+        xsd <- approx(theta, f.sigma, x$x, rule=2)$y # Nov 2020 added rule=1
         theta <- c(x$x, theta[which(f.mu <= 0)])
         f.mu <- c(x$y, f.mu[which(f.mu <= 0)])
         f.sigma <- c(xsd, f.sigma[which(f.mu <= 0)])
@@ -523,20 +527,20 @@ calBP.14C <- function(yr, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C"
 
     # interpolate and normalise calibrated distribution to 1
     cal <- cal[min(which(cal[,2] > 0)):max(which(cal[,2] > 0)),] # remove unnecessary data
-    cal <- approx(cal[,1], cal[,2], seq(min(cal[,1]), max(cal[,1]), by=yrsteps))
+    cal <- approx(cal[,1], cal[,2], seq(min(cal[,1]), max(cal[,1]), by=yrsteps), rule=rule)
     cal <- cbind(cal$x, cal$y/sum(cal$y))
     if(BCAD && (0 %in% cal[,1]))
-			   cal <- cal[-which(cal[,1]==0),] # 0 BC/AD does not exist
+      cal <- cal[-which(cal[,1]==0),] # 0 BC/AD does not exist
     # only report those normalised calibrated probabilities beyond a threshold
     cal[cal[,2] > threshold,]
   }
 
 
 # find the highest posterior density (hpd) of the calibrated distribution
-.hpd <- function(dat, prob, hpdsteps, yrsteps)
+.hpd <- function(dat, prob, hpdsteps, yrsteps, rule=1)
   {
     # interpolate and rank the ages according to their calibrated distribution probabilities
-    dat <- approx(dat[,1], dat[,2], seq(min(dat[,1]), max(dat[,1]), by=yrsteps))
+    dat <- approx(dat[,1], dat[,2], seq(min(dat[,1]), max(dat[,1]), by=yrsteps), rule=rule)
     o <- order(dat$y, decreasing=TRUE)
     dat <- cbind(dat$x[o], dat$y[o]/sum(dat$y))
 
