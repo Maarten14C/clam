@@ -1,7 +1,7 @@
 
 #' clam
 #' 
-#' clam is R code for classical (non-Bayesian) age-depth modelling.
+#' Classical (non-Bayesian) age-depth modelling.
 #' 
 #' @docType package
 #' @author Maarten Blaauw <maarten.blaauw@qub.ac.uk>
@@ -13,8 +13,7 @@
 #' @name clam
 NULL  
 
-# done: repaired bug with Est not being the same size as smp (e.g., whenever dates were truncated or removed, either automatically or manually)
-# do: repair mixed.effect
+# done: repaired bug with Est not being the same size as smp (e.g., whenever dates were truncated or removed, either automatically or manually), repaired mixed.effect (does not use student.t any more)
 
 # so that functions such as pMC.age etc. are available immediately
 library(IntCal)

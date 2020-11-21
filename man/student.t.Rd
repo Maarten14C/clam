@@ -17,7 +17,8 @@ student.t(
   cc4 = "mixed",
   ccdir = "",
   Cutoff = 1e-05,
-  times = 8
+  times = 8,
+  rule = 1
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ Use \code{ccdir="."} to choose current working directory. Use \code{ccdir="Curve
 \item{Cutoff}{Threshold above which calibrated probabilities are plotted}
 
 \item{times}{8 by default.}
+
+\item{rule}{How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.}
 }
 \description{
 Visualise how a date calibrates using the student-t distribution and the the normal distribution.

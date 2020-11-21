@@ -1,5 +1,7 @@
 # clam 2.36
 * now installs and uses the IntCal package to read the radiocarbon calibration curves (this to have less replication of files between packages that use the IntCal curves)
+* repaired bug with Est not being the same size as smp (e.g., whenever dates were truncated or removed, either automatically or manually)
+* repaired mixed.effect (however, does not use student.t any more)
 
 # clam 2.3.5
 * updated to the latest IntCal20 calibration curves

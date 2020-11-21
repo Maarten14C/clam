@@ -82,7 +82,8 @@ clam(
   rangecol = rgb(0, 0, 0, 0.3),
   slumpcol = grey(0.75),
   plotname = TRUE,
-  ash = FALSE
+  ash = FALSE,
+  rule = 1
 )
 }
 \arguments{
@@ -269,12 +270,14 @@ and \code{"l"}, \code{"7"}, \code{"c"}, \code{"u"}, "]" or \code{"o"} for corres
 \item{plotname}{Print the core name on the graph.}
 
 \item{ash}{Plot all distributions at the same height.}
+
+\item{rule}{How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.}
 }
 \value{
 Age model construction together with a text output and files saved to a folder in the \code{coredir/core} directory.
 }
 \description{
-clam is R code for classical (non-Bayesian) age-depth modelling.
+Classical (non-Bayesian) age-depth modelling.
 
 Produce age-depth models for cores with dated depths.
 }

@@ -17,7 +17,8 @@ calBP.14C(
   pb2 = "postbomb_NH2.14C",
   pb3 = "postbomb_NH3.14C",
   pb4 = "postbomb_SH1-2.14C",
-  pb5 = "postbomb_SH3.14C"
+  pb5 = "postbomb_SH3.14C",
+  rule = 1
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ Use \code{ccdir="."} to choose current working directory. Use \code{ccdir="Curve
 \item{pb4}{For Southern hemisphere regions 1-2 postbomb C-14 dates.}
 
 \item{pb5}{For Southern hemisphere region 3 postbomb C-14 dates.}
+
+\item{rule}{How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.}
 }
 \description{
 From a given calendar ages, the calibration curve (default cc=1) is interpolated and the corresponding 14C age and error is returned.

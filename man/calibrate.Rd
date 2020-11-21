@@ -47,7 +47,8 @@ calibrate(
   date.col = "red",
   cc.col = rgb(0, 0.5, 0, 0.7),
   dist.col = rgb(0, 0, 0, 0.3),
-  sd.col = rgb(0, 0, 0, 0.5)
+  sd.col = rgb(0, 0, 0, 0.5),
+  rule = 1
 )
 }
 \arguments{
@@ -137,6 +138,8 @@ Use \code{ccdir="."} to choose current working directory. Use \code{ccdir="/Curv
 \item{dist.col}{Colour of the calibrated distribution.}
 
 \item{sd.col}{Colour of calibrated range.}
+
+\item{rule}{How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.}
 }
 \value{
 A graph of the raw and calibrated C-14 date, the calibrated ranges and, invisibly, the calibrated ranges and probabilities.
