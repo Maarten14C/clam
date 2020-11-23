@@ -65,7 +65,7 @@ library(IntCal)
 #' then a "best" estimate, and finally the reconstructed accumulation rates. The reported values are rounded to 0 decimals by default
 #' (\code{decimals=0}). Accumulation rates are in yr/cm ("deposition time") by default (\code{cmyr=FALSE}), but can be reported in cm/yr (\code{cmyr=TRUE}).
 #'
-#' see accompanying webpage \url{http://www.qub.ac.uk/chrono/blaauw/clam.html} and Blaauw 2010 (Quaternary Geochronology 5: 512-518).
+#' see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 #'
 #' @param core Name of the core, given using quotes. Defaults to the core provided with clam, \code{core="Example"}.
 #' @param type The type of age-depth model. Five different types are provided:
@@ -181,7 +181,6 @@ library(IntCal)
 #' @examples 
 #'  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
 #'  clam(, coredir=tempdir(), extradates=470) 
-#' @seealso \url{http://www.qub.ac.uk/chrono/blaauw/clam.html}
 #' \link{calibrate}
 #' \link{mix.calibrationcurves}
 #' \link{pMC.age}

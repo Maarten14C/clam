@@ -1,4 +1,8 @@
-# clam 2.36
+# clam 2.3.6.1
+* removed links to chrono website, as it has become unstable and could disappear any moment now.
+* added an option 'rule' to allow more choice when extrapolating values (see ?approx). This is an internal option and shouldn't normally be important for users.
+
+# clam 2.3.6
 * now installs and uses the IntCal package to read the radiocarbon calibration curves (this to have less replication of files between packages that use the IntCal curves)
 * repaired bug with Est not being the same size as smp (e.g., whenever dates were truncated or removed, either automatically or manually)
 * repaired mixed.effect (however, does not use student.t any more)
