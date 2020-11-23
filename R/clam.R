@@ -6,7 +6,7 @@
 #' @docType package
 #' @author Maarten Blaauw <maarten.blaauw@qub.ac.uk>
 #' @importFrom grDevices dev.off grey rgb pdf png
-#' @importFrom graphics abline image layout legend lines par points polygon rect
+#' @importFrom graphics abline image layout legend lines par points polygon rect plot
 #' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
 #' @importFrom utils read.csv read.table write.table packageName
 #' @importFrom IntCal copyCalibrationCurve mix.curves pMC.age age.pMC
@@ -182,9 +182,6 @@ library(IntCal)
 #'  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
 #'  clam(, coredir=tempdir(), extradates=470) 
 #' \link{calibrate}
-#' \link{mix.calibrationcurves}
-#' \link{pMC.age}
-#' \link{age.pMC}
 #' \link{student.t}
 #' \link{deptime.depth}
 #' \link{deptime.age}

@@ -325,11 +325,17 @@ The file containing the age estimates has 5 columns; first the depths, then the 
 then a "best" estimate, and finally the reconstructed accumulation rates. The reported values are rounded to 0 decimals by default
 (\code{decimals=0}). Accumulation rates are in yr/cm ("deposition time") by default (\code{cmyr=FALSE}), but can be reported in cm/yr (\code{cmyr=TRUE}).
 
-see accompanying webpage \url{http://www.qub.ac.uk/chrono/blaauw/clam.html} and Blaauw 2010 (Quaternary Geochronology 5: 512-518).
+see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 }
 \examples{
  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
  clam(, coredir=tempdir(), extradates=470) 
+\link{calibrate}
+\link{student.t}
+\link{deptime.depth}
+\link{deptime.age}
+\link{plot_proxies}
+
 }
 \references{
 Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
@@ -337,17 +343,6 @@ in the south Colombian Cauca Valley. _Journal of Quaternary Science_ 17, 667-682
 
 Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. Quaternary Geochronology 5, 512-518
 \url{http://dx.doi.org/10.1016/j.quageo.2010.01.002}
-}
-\seealso{
-\url{http://www.qub.ac.uk/chrono/blaauw/clam.html}
-\link{calibrate}
-\link{mix.calibrationcurves}
-\link{pMC.age}
-\link{age.pMC}
-\link{student.t}
-\link{deptime.depth}
-\link{deptime.age}
-\link{plot_proxies}
 }
 \author{
 Maarten Blaauw <maarten.blaauw@qub.ac.uk>
