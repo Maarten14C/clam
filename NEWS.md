@@ -1,4 +1,4 @@
-# clam 2.3.6.1
+# clam 2.3.7
 * removed links to chrono website, as it has become unstable and could disappear any moment now.
 * added an option 'rule' to allow more choice when extrapolating values (see ?approx). This is an internal option and shouldn't normally be important for users.
 
