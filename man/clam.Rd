@@ -330,11 +330,6 @@ see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 \examples{
  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
  clam(, coredir=tempdir(), extradates=470) 
-\link{calibrate}
-\link{student.t}
-\link{deptime.depth}
-\link{deptime.age}
-\link{plot_proxies}
 
 }
 \references{

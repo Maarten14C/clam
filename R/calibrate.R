@@ -15,7 +15,7 @@
 #' e.g., for an uncertainty of 50yr, \code{calibrate(130,20,reservoir=c(100, 50))}. 
 #' The uncertainty for the age offset will then be added to the error (by taking the square root of the sum 
 #' of the squared error and the squared offset uncertainty). If the carbon of your sample has mixed marine/terrestrial sources,
-#' instead apply the marine offset using \code{mix.calibrationcurves} \link{mix.calibrationcurves}, and calibrate the date using that custom-built curve.
+#' instead apply the marine offset using mix.calibrationcurves mix.calibrationcurves, and calibrate the date using that custom-built curve.
 #'
 #' If you prefer to work with, e.g., 68 \% as opposed to the default 95 \% confidence intervals, 
 #' type: \code{calibrate(130, 20, prob=0.68)} or \code{calibrate(130, 20,, 0.68)} (the commas between the brackets indicate the position of the option;

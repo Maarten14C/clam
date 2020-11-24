@@ -181,11 +181,6 @@ library(IntCal)
 #' @examples 
 #'  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
 #'  clam(, coredir=tempdir(), extradates=470) 
-#' \link{calibrate}
-#' \link{student.t}
-#' \link{deptime.depth}
-#' \link{deptime.age}
-#' \link{plot_proxies}
 #' 
 #' @references
 #' Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
