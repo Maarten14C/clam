@@ -337,7 +337,7 @@ Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and
 in the south Colombian Cauca Valley. _Journal of Quaternary Science_ 17, 667-682
 
 Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. Quaternary Geochronology 5, 512-518
-\url{http://dx.doi.org/10.1016/j.quageo.2010.01.002}
+\doi{10.1016/j.quageo.2010.01.002}
 }
 \author{
 Maarten Blaauw <maarten.blaauw@qub.ac.uk>
