@@ -159,7 +159,7 @@ calibrate <- function(cage=2450, error=50, reservoir=0, prob=0.95, cc=1, cc1="3C
                stop("I do not understand which postbomb curve you mean, check the manual", call.=FALSE)
 	yrsteps <- min(pbsteps, yrsteps)
     if(length(pb) > 0) {
-      pb <- read.table(system.file("extdata", pb, package=packageName()))
+      pb <- read.table(system.file("extdata", pb, package="IntCal"))
       pb.x <- seq(min(pb[,1]), max(pb[,1]), by=yrsteps)
       pb.y <- approx(pb[,1], pb[,2], pb.x, rule=rule)$y
       pb.sd <- approx(pb[,1], pb[,3], pb.x, rule=rule)$y
@@ -407,11 +407,11 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
     else 
     {
       
-      if(postbomb==1) bomb <- read.table(system.file("extdata","postbomb_NH1.14C", package=packageName()))[,1:3] else
-        if(postbomb==2) bomb <- read.table(system.file("extdata","postbomb_NH2.14C", package=packageName()))[,1:3] else
-          if(postbomb==3) bomb <- read.table(system.file("extdata","postbomb_NH3.14C", package=packageName()))[,1:3] else
-            if(postbomb==4) bomb <- read.table(system.file("extdata","postbomb_SH1-2.14C", package=packageName()))[,1:3] else
-              if(postbomb==5) bomb <- read.table(system.file("extdata","postbomb_SH3.14C", package=packageName()))[,1:3] else
+      if(postbomb==1) bomb <- read.table(system.file("extdata","postbomb_NH1.14C", package="IntCal"))[,1:3] else
+        if(postbomb==2) bomb <- read.table(system.file("extdata","postbomb_NH2.14C", package="IntCal"))[,1:3] else
+          if(postbomb==3) bomb <- read.table(system.file("extdata","postbomb_NH3.14C", package="IntCal"))[,1:3] else
+            if(postbomb==4) bomb <- read.table(system.file("extdata","postbomb_SH1-2.14C", package="IntCal"))[,1:3] else
+              if(postbomb==5) bomb <- read.table(system.file("extdata","postbomb_SH3.14C", package="IntCal"))[,1:3] else
                 stop("Warning, cannot find postbomb curve #", postbomb, " (use values of 1 to 5 only)")
               
       bomb.x <- seq(max(bomb[, 1]), min(bomb[, 1]), length = 500)
