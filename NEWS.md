@@ -1,3 +1,6 @@
+# clam 2.3.8
+* repaired a bug where calibrate() couldn't find postbomb curves if required. Reported by David Hein-Griggs, University of Exeter.
+
 # clam 2.3.7
 * removed links to chrono website, as it has become unstable and could disappear any moment now.
 * added an option 'rule' to allow more choice when extrapolating values (see ?approx). This is an internal option and shouldn't normally be important for users.
