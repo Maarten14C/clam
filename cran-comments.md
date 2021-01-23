@@ -9,6 +9,5 @@
 
 * This is a new release.
  
- Removed the link to a mostly offline url - thanks for having identified this.
  
  
