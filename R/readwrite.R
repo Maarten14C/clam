@@ -11,7 +11,7 @@
 
     # read the file with the dating information
     dat <- list(coredir=coredir, name=name, calib=list(), ignore=NULL, ID=character(nrow(dets)), cage=numeric(nrow(dets)), 
-    error=numeric(nrow(dets)), f.cage=numeric(nrow(dets)), f.error=numeric(nrow(dets)), outside=NULL, cal=NULL, res=NULL, depth=NULL, thick=NULL, BCAD=NULL,
+    error=numeric(nrow(dets)), f.caFge=numeric(nrow(dets)), f.error=numeric(nrow(dets)), outside=NULL, cal=NULL, res=NULL, depth=NULL, thick=NULL, BCAD=NULL,
     hpd=list(), mid1=NULL, mid2=NULL, wmn=NULL, med=NULL, mode=NULL) 
 
     # ignore dates if required, add thickness column if it was left out
@@ -176,7 +176,7 @@
             cat("\n", file=hpd.file)
           }
       }
-    close(hpd.file)
+    on.exit(close(hpd.file))
 
     # relevant settings and results
     set.file <- file(paste(dat$coredir, name, runnames[type], "_settings.txt", sep=""), "w")
@@ -238,7 +238,7 @@
       if(reversal) "\nSome age-depth reversals occurred"),
       if(remove.reverse) "\nAny models with age-depth reversals were removed",
       "\n\nProduced ", date(), sep="", file=set.file)
-    close(set.file)
+    on.exit(close(set.file))
 
     if(plotpdf)
       {
