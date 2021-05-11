@@ -13,7 +13,7 @@
 #' @name clam
 NULL  
 
-# do: deal better with calling the IntCal package so that pMC.age etc. can be called directly
+# do:
 
 # so that functions such as pMC.age etc. are available immediately
 library(IntCal)
