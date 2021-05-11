@@ -1,3 +1,6 @@
+# clam 2.3.9
+* removed closeAllConnections, as directed by CRAN's maintainers
+
 # clam 2.3.8
 * repaired a bug where calibrate() couldn't find postbomb curves if required. Reported by David Hein-Griggs, University of Exeter.
 

@@ -176,7 +176,7 @@
             cat("\n", file=hpd.file)
           }
       }
-    on.exit(close(hpd.file))
+    close(hpd.file)
 
     # relevant settings and results
     set.file <- file(paste(dat$coredir, name, runnames[type], "_settings.txt", sep=""), "w")
@@ -238,7 +238,7 @@
       if(reversal) "\nSome age-depth reversals occurred"),
       if(remove.reverse) "\nAny models with age-depth reversals were removed",
       "\n\nProduced ", date(), sep="", file=set.file)
-    on.exit(close(set.file))
+    close(set.file)
 
     if(plotpdf)
       {
