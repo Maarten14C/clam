@@ -37,7 +37,7 @@ Please don't over-interpret the Fit value, which is also reported. Sometimes age
 
 ***
 
-There are many options to produce different types of age-depth models. The default, `type=1`, is linear interpolation between the dated depths. Alternatives are linear or higher polynomial regression (`type=2`, the degree is set with the `smooth` parameter), cubic spline (`type=3`), smooth spline (`type=4`) or locally weighted spline (`type=5`). Hiatuses can be set at specific depths using `hiatus`, and bits where sedimenation was abrupt can also be modelled (`slump`, e.g., tephra layers). If some dates appear outlying they can be labelled such and excluded from the age-model (e.g. if the sixth and ninth dates counting from the top one appear outlying, type `outliers=c(6,9)`). If you prefer your ages as BC/AD, use `BCAD=TRUE`. Note that such decisions can have large impacts on the resulting age-depth model - please be critical about your assumptions.
+There are many options to produce different types of age-depth models. The default, `type=1`, is linear interpolation between the dated depths. Alternatives are linear or higher polynomial regression (`type=2`, the degree is set with the `smooth` parameter), cubic spline (`type=3`), smooth spline (`type=4`) or locally weighted spline (`type=5`). Hiatuses can be set at specific depths using `hiatus`, and bits where sedimentation was abrupt can also be modelled (`slump`, e.g., tephra layers). If some dates appear outlying they can be labelled such and excluded from the age-model (e.g. if the sixth and ninth dates counting from the top one appear outlying, type `outliers=c(6,9)`). If you prefer your ages as BC/AD, use `BCAD=TRUE`. Note that such decisions can have large impacts on the resulting age-depth model - please be critical about your assumptions.
 
 By default, ages are calculated for every cm from the top to the bottom dated depth. This can be adapted by specifying `dmin`, `dmax`, and `every` (default 1). A file with depths can also be provided. This must be in the core's folder (see later), start with the core's name, and end in `_depths.txt`. Then use `depths.file=TRUE` as option.
 
@@ -55,7 +55,7 @@ clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
 
 When clam runs it will tell you where the files will be stored. The default is to use an 'umbrella' folder called `clam_runs` or `Cores`, and store the runs as folders within it. After running the default core, a folder 'Example' will appear in the umbrella folder, and this will contain the input and output files of the clam run.
 
-To run your own cores, make a new folder within the umbrella folder, and save it under a name, e.g., `MyCore`. Then place a file called `MyCore.csv` in that folder. This file wil contain the dates and should have the same formatting as the `Example.csv` file in the `Example` folder. It has headers and six fields (or seven if you want to include a variable `thickness` which will draw a rectangle showing the thickness of the dated depth):
+To run your own cores, make a new folder within the umbrella folder, and save it under a name, e.g., `MyCore`. Then place a file called `MyCore.csv` in that folder. This file will contain the dates and should have the same formatting as the `Example.csv` file in the `Example` folder. It has headers and six fields (or seven if you want to include a variable `thickness` which will draw a rectangle showing the thickness of the dated depth):
 
 | Lab ID | C14 age | cal age | error | offset | depth |
 | ------ | ------- | ------- | ----- | ------ | ----- |
@@ -65,7 +65,7 @@ To run your own cores, make a new folder within the umbrella folder, and save it
 |GR0003  |1502     |         |  37   |        |  298  |
 |GR0004  |2167     |         |  42   |        |  365  |
 
-Note that depths with radiocarbon dates should have the dates in the second/radiocarbon column, and no entry in the cal age colum. Dates already on the calendar scale should be empty in the second column and have their entry in the third/cal age column. Leave the offset column empty if no offset is assumed. All dates must have an error estimate - this cannot be left empty. If you produce your file in a spreadsheet program such as MS-Excel or LibreOffice, please also check its formatting in a plain-text editor to see if all looks OK (e.g., no orphan quotation marks, no empty lines, not too many commas).
+Note that depths with radiocarbon dates should have the dates in the second/radiocarbon column, and no entry in the cal age column. Dates already on the calendar scale should be empty in the second column and have their entry in the third/cal age column. Leave the offset column empty if no offset is assumed. All dates must have an error estimate - this cannot be left empty. If you produce your file in a spreadsheet program such as MS-Excel or LibreOffice, please also check its formatting in a plain-text editor to see if all looks OK (e.g., no orphan quotation marks, no empty lines, not too many commas).
 
 Then run `clam("MyCore.csv")`.
 

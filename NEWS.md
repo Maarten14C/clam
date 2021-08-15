@@ -58,7 +58,7 @@
 * repaired bug with slump, causing some dates to be assigned wrong depths
 * corrected bug with drawing sample thickness when extradates applied
 * new option for est, midpoint of entire calibrated distributions (above threshold, est=7). This differs slightly from the midpoint of the calibrated hpd ranges (est=3)
-* minor changes to the manual, incl. more explicit citation suggestions
+* minor changes to the manual, including more explicit citation suggestions
 * added function student.t to show effect alternative calibration
 
 # clam 2.1
