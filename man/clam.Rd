@@ -334,7 +334,7 @@ see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 }
 \references{
 Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
-in the south Colombian Cauca Valley. _Journal of Quaternary Science_ 17, 667-682
+in the south Colombian Cauca Valley. Journal of Quaternary Science 17, 667-682
 
 Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. Quaternary Geochronology 5, 512-518
 \doi{10.1016/j.quageo.2010.01.002}

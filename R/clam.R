@@ -5,15 +5,17 @@
 #' 
 #' @docType package
 #' @author Maarten Blaauw <maarten.blaauw@qub.ac.uk>
-#' @importFrom grDevices dev.off grey rgb pdf png
+#' @importFrom grDevices dev.off grey pdf png rgb
 #' @importFrom graphics abline image layout legend lines par points polygon rect plot
 #' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
-#' @importFrom utils read.csv read.table write.table packageName
+#' @importFrom utils packageName read.csv read.table write.table 
 #' @import IntCal
 #' @name clam
 NULL  
 
-# do:
+# do: 
+
+# done: Add vignettes. 
 
 # so that functions such as pMC.age etc. are available immediately
 library(IntCal)
@@ -184,25 +186,21 @@ library(IntCal)
 #' 
 #' @references
 #' Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
-#' in the south Colombian Cauca Valley. _Journal of Quaternary Science_ 17, 667-682
+#' in the south Colombian Cauca Valley. Journal of Quaternary Science 17, 667-682
 #'
 #' Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. Quaternary Geochronology 5, 512-518
 #' \doi{10.1016/j.quageo.2010.01.002}
 #' @export
-clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, coredir=NULL, ask=TRUE, wghts=1, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C",  postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C",pb5="postbomb_SH3.14C", ccdir="", outliers=NULL, ignore=NULL, youngest=NULL, extradates=NULL, slump=NULL, est=1, calibt=FALSE, mixed.effect=FALSE, dmin=NULL, dmax=NULL, every=1, yrmin=NULL, yrmax=NULL, yrsteps=1, pbsteps=0.01, hpdsteps=1, BCAD=FALSE, decimals=0, cmyr=FALSE, ageofdepth=NULL, depth="cm", depthseq=NULL, depths.file=FALSE, thickness=1, hiatus=NULL, remove.reverse=0.5, times=5, sep=",", ext=".csv", runname=NULL, storedat=TRUE, threshold=1e-6, proxies=FALSE, revaxes=FALSE, revd=TRUE, revyr=TRUE, calhght=0.3, maxhght=0.01, mirror=TRUE, plotrange=TRUE, bty="l", mar=c(3.5,3,2,1), mgp=c(2,1,0), plotpdf=TRUE, plotpng=TRUE, greyscale=NULL, yrlab=NULL, dlab=NULL, calcol=rgb(0,0.5,0.5,0.5), C14col=rgb(0,0,1,0.5), outcol="red", outlsize=1, bestcol="black", rangecol=rgb(0,0,0,0.3), slumpcol=grey(0.75), plotname=TRUE, ash=FALSE, rule=1) {
+clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, coredir=NULL, ask=TRUE, wghts=1, cc=1, cc1="3Col_intcal20.14C", cc2="3Col_marine20.14C", cc3="3Col_shcal20.14C", cc4="mixed.14C", postbomb=FALSE, pb1="postbomb_NH1.14C", pb2="postbomb_NH2.14C", pb3="postbomb_NH3.14C", pb4="postbomb_SH1-2.14C", pb5="postbomb_SH3.14C", ccdir="", outliers=NULL, ignore=NULL, youngest=NULL, extradates=NULL, slump=NULL, est=1, calibt=FALSE, mixed.effect=FALSE, dmin=NULL, dmax=NULL, every=1, yrmin=NULL, yrmax=NULL, yrsteps=1, pbsteps=0.01, hpdsteps=1, BCAD=FALSE, decimals=0, cmyr=FALSE, ageofdepth=NULL, depth="cm", depthseq=NULL, depths.file=FALSE, thickness=1, hiatus=NULL, remove.reverse=0.5, times=5, sep=",", ext=".csv", runname=NULL, storedat=TRUE, threshold=1e-6, proxies=FALSE, revaxes=FALSE, revd=TRUE, revyr=TRUE, calhght=0.3, maxhght=0.01, mirror=TRUE, plotrange=TRUE, bty="l", mar=c(3.5,3,2,1), mgp=c(2,1,0), plotpdf=TRUE, plotpng=TRUE, greyscale=NULL, yrlab=NULL, dlab=NULL, calcol=rgb(0,0.5,0.5,0.5), C14col=rgb(0,0,1,0.5), outcol="red", outlsize=1, bestcol="black", rangecol=rgb(0,0,0,0.3), slumpcol=grey(0.75), plotname=TRUE, ash=FALSE, rule=1) {
   # If coredir is left empty, check for a folder named Cores in the current working directory, and if this doesn't exist, for a folder called clam_runs (make this folder if it doesn't exist yet).
   # Check if we have write access. If not, tell the user to provide a different, writeable location for coredir. 
 
-  coredir <- assign_coredir(coredir, core, ask)	  
+  coredir <- assign_coredir(coredir, core, ask)
   if(core == "Example") {
     dir.create(paste(coredir, "Example/", sep=""), showWarnings = FALSE, recursive = TRUE)
     fileCopy <- system.file("extdata/Example/", package="clam")
     file.copy(fileCopy, coredir, recursive = TRUE, overwrite=FALSE)
   } 
-
-  # set the calibration curve
-  if(ccdir == "")
-    ccdir <- system.file("extdata", package="IntCal") 
 
   # warn and stop if unexpected settings are provided
   if(type > 5 || type < 1 || prob < 0 || prob > 1 || its < 100 || wghts < 0 || wghts > 1 || est < 1 || est > 7 || yrsteps <= 0 || hpdsteps <= 0 || every <= 0 || decimals < 0 || cmyr < 0 || cmyr > 1 || thickness < 0 || times < 1 || calhght < 0 || (type==5 && length(hiatus)>0))
@@ -210,29 +208,29 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
 
   csvFile <- paste(coredir, core, "/", core, ext, sep="")
   if(!file.exists(csvFile))
-    stop(paste("\nInput data file", csvFile, "not found.", sep=" "), call.=FALSE)
+    stop(paste("\nInput data file", csvFile, "not found."), call.=FALSE)
   dets <- read.csv(csvFile, sep=sep)
   d <- dets[,6]
   these <- 1:length(d) # to possibly kick out dates later on; Nov 2020
   if(min(diff(d)) < 0)
-    cat("\n Warning, depths not in ascending order (top ones should come first).\n\n")
+    message(" Warning, depths not in ascending order (top ones should come first).")
 
   # avoid Windows/Mac habit of silently adding .txt extension to plain text files
-  Gates <- list.files(paste(coredir, core, sep=""), pattern=".csv.txt")
-  if(length(Gates) > 0) {
-    cat("\nRemoving unnecessary .txt extension from .csv file", Gates[1], "\n")
-    file.rename(paste0(coredir, core, "/", core, ".csv.txt"),
-      paste0(coredir, core, "/", core, ".csv"))
+  bill <- list.files(paste(coredir, core, sep=""), pattern=".csv.txt")
+  if(length(bill) > 0) {
+    message("Removing unnecessary .txt extension from .csv file", bill[1])
+    file.rename(file.path(coredir, core, paste0(core, ".csv.txt")),
+      file.path(coredir, core, "/", paste0(core, ".csv")))
   }
 
   # set the calibration curve
   ccdir <- .validateDirectoryName(ccdir)
   if(ccdir == "") # so, if no alternative folder provided, use clam's calibration curves
-    ccdir = paste0(system.file("extdata", package="IntCal"), "/")
-  if(cc==1) calcurve <- read.table(paste0(ccdir, cc1)) else
-    if(cc==2) calcurve <- read.table(paste0(ccdir, cc2)) else
-      if(cc==3) calcurve <- read.table(paste0(ccdir, cc3)) else
-        if(cc==4) calcurve <- read.table(paste0(ccdir, cc4)) else
+    ccdir = system.file("extdata", package="IntCal")
+  if(cc==1) calcurve <- read.table(file.path(ccdir, cc1)) else
+    if(cc==2) calcurve <- read.table(file.path(ccdir, cc2)) else
+      if(cc==3) calcurve <- read.table(file.path(ccdir, cc3)) else
+        if(cc==4) calcurve <- read.table(file.path(ccdir, cc4)) else
           stop("I do not understand which calibration curve you mean, check the manual", call.=FALSE)
   if(cc==1) ccname <- cc1 else
     if(cc==2) ccname <- cc2 else
@@ -245,7 +243,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   if(length(cdat[!is.na(cdat)]) > 0)
     if(min(cdat[!is.na(cdat)]) < 0)
       if(postbomb==FALSE)
-        cat("Warning, negative 14C ages, should I use a postbomb curve?") else {
+        message("Warning, negative 14C ages, should I use a postbomb curve?") else {
           if(postbomb>5)
             stop("I do not understand which postbomb curve you mean, check the manual", call.=FALSE)
           yrsteps <- min(pbsteps, yrsteps)
@@ -296,7 +294,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   }
   # read in the data
   dat <- .read.clam(core, coredir, ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb, rule=rule)
-  cat("\n Calibrating dates... ")
+  message(" Calibrating dates... ")
 
   # calculate the depths to be used, based on the ranges and resolution
   if(length(dmin)==0)
@@ -304,21 +302,24 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   if(length(dmax)==0)
     dmax <- ceiling(max(dat$depth))
   if(depths.file)
-    if(file.exists(dd <- paste(coredir, core, "/", core, "_depths.txt", sep=""))) {
+    if(file.exists(dd <- paste0(coredir, core, "/", core, "_depths.txt"))) {
       if(length(depthseq) == 0)
         depthseq <- seq(dmin, dmax, by=every)
       depthseq <- sort(unique(c(depthseq, suppressWarnings(read.table(dd))[,1])))
-      dmin <- min(depthseq)#, read.table(dd)[,1])
-      dmax <- max(depthseq)#, read.table(dd)[,1])
+#      dmin <- min(depthseq)#, read.table(dd)[,1])
+#      dmax <- max(depthseq)#, read.table(dd)[,1])
     } else
-      stop(paste("\nCannot find file ", dat$core, "_depths.txt!\n", sep=""), call.=FALSE)
+      stop(paste0("\nCannot find file ", dat$core, "_depths.txt!\n"), call.=FALSE)
   if(length(depthseq) == 0)
     depthseq <- seq(dmin, dmax, by=every)
+  dmin <- min(depthseq)
+  dmax <- max(depthseq)
+
   if(proxies) {
     storedat <- TRUE
-    if(file.exists(dd <- paste(coredir, core, "/", core, "_proxies.csv", sep="")))
+    if(file.exists(dd <- paste0(coredir, core, "/", core, "_proxies.csv")))
       dat$proxies <- suppressWarnings(read.csv(dd, sep=sep)) else
-        stop(paste("\nCannot find file ", dat$core, " _proxies.csv!\n", sep=""), call.=FALSE)
+        stop(paste0("\nCannot find file ", dat$core, " _proxies.csv!\n"), call.=FALSE)
     dmin <- min(depthseq, dat$proxies[,1])
     dmax <- max(depthseq, dat$proxies[,1])
     depthseq <- sort(unique(c(depthseq, dat$proxies[,1])))
@@ -347,7 +348,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
       errors <- dat$error
       calibs <- dat$calib
     }
-	calibs <<- calibs # tmp
+	#calibs <<- calibs # tmp
 
   # age-depth modelling with curves through sampled age estimates
   # in sections if one or more hiatuses are present
@@ -355,7 +356,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     allrange <- c(0,0,0,0)
     hiatusseq <- sort(c(range(depthseq), hiatus))
     for(i in 2:length(hiatusseq)) {
-      cat(paste("\n section ", i-1, ",", sep=""))
+      message(paste0("\n section ", i-1, ","))
       section <- depthseq[min(which(depthseq >= hiatusseq[i-1])) : max(which(depthseq <= hiatusseq[i]))]
       if(i>2) section <- section[-1]
       sel <- min(which(depths >= min(section))):max(which(depths <= max(section)))
@@ -369,13 +370,13 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     }
   calrange <- allrange[2:nrow(allrange),]
   } else {
-    if(mixed.effect) {
-	  if(length(outliers) > 0)
-	    smp <- .mixed.effect(its, depths, dat$cal[-outliers], dat$cage[-outliers], errors, calibs, est, theta, f.mu, f.sigma, yrsteps, calibt) else
-	      smp <- .mixed.effect(its, depths, dat$cal, dat$cage, errors, calibs, Est, theta, f.mu, f.sigma, yrsteps, calibt) 
-	  } else
-		smp <- .smpl(its, depths, calibs, Est)
-    calrange <- .model.clam(type, smooth, its, wghts, depths, errors, depthseq, prob, est, dat, smp, greyscale, remove.reverse, storedat, ageofdepth, BCAD)
+      if(mixed.effect) {
+        if(length(outliers) > 0)
+          smp <- .mixed.effect(its, depths, dat$cal[-outliers], dat$cage[-outliers], errors, calibs, est, theta, f.mu, f.sigma, yrsteps, calibt) else
+            smp <- .mixed.effect(its, depths, dat$cal, dat$cage, errors, calibs, Est, theta, f.mu, f.sigma, yrsteps, calibt)
+      } else
+        smp <- .smpl(its, depths, calibs, Est)
+      calrange <- .model.clam(type, smooth, its, wghts, depths, errors, depthseq, prob, est, dat, smp, greyscale, remove.reverse, storedat, ageofdepth, BCAD)
     }
   dat$model <- approx(calrange[,1], (calrange[,2]+calrange[,3])/2, dat$depth)$y
 
@@ -432,15 +433,15 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     legend("topleft", paste(ageofdepth, depth), bty="n")
     layout(matrix(1))
     rng <- round(calrange[max(which(calrange[,1] <= ageofdepth)),])
-    cat("\n  Age range of ", ageofdepth, " ", depth, ": ", rng[3], " to ", rng[2], ifelse(BCAD, " cal BC/AD", " cal BP"), " (", rng[3]-rng[2], " yr, ", prob, " % range)",  sep="")
+    message("  Age range of ", ageofdepth, " ", depth, ": ", rng[3], " to ", rng[2], ifelse(BCAD, " cal BC/AD", " cal BP"), " (", rng[3]-rng[2], " yr, ", prob, " % range)",  sep="")
   }
 
   # report the confidence ranges, the goodness-of-fit, and whether any age-reversals occurred
   rng <- round(calrange[,3]-calrange[,2])
-  cat("\n  ", core, "'s ", 100*prob, "% confidence ranges span from ", min(rng), " to ", max(rng), " yr (average ", round(mean(rng)), " yr)", sep="")
-  cat("\n  Fit (-log, lower is better):", gfit, "\n")
+  message("\n", core, "'s ", 100*prob, "% confidence ranges span from ", min(rng), " to ", max(rng), " yr (average ", round(mean(rng)), " yr)")
+  message("  Fit (-log, lower is better):", gfit)
   if(reversal) 
-    cat("  Age reversals occurred. Try other model?\n")
+    message("  Age reversals occurred. Try other model?\n")
 }
 
 
@@ -471,9 +472,9 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
           warp <- c(warp, i)
     if(length(warp) > 0)
       if(length(warp) > remove.reverse*its)
-        cat("\n\n !!! Too many models with age reversals!!!\n") else
+        message("\n !!! Too many models with age reversals!!!\n") else
           {
-            cat("\n Removing", length(warp), "models with age reversals,", its-length(warp), "models left...")
+            message("\n Removing", length(warp), "models with age reversals,", its-length(warp), "models left...")
             chron <- chron[,-warp]
             smp <- smp[,-warp,]
           }

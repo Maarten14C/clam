@@ -42,14 +42,14 @@ add.dates(
 
 \item{normalise}{By default, the date is normalised to an area of 1 (\code{normalise=TRUE}).}
 
-\item{t.a}{The dates are treated using the student's t distribution by default (\code{normal=FALSE}). 
-The student's t-distribution has two parameters, t.a and t.b, set at 3 and 4 by default (see Christen and Perez, 2010). 
-If you want to assign narrower error distributions (more closely resembling the normal distribution), set t.a and t.b at for example 33 and 34 respectively (e.g., for specific dates in your .csv file). 
+\item{t.a}{The dates are treated using the student's t distribution by default (\code{normal=FALSE}).
+The student's t-distribution has two parameters, t.a and t.b, set at 3 and 4 by default (see Christen and Perez, 2010).
+If you want to assign narrower error distributions (more closely resembling the normal distribution), set t.a and t.b at for example 33 and 34 respectively (e.g., for specific dates in your .csv file).
 For symmetry reasons, t.a must always be equal to t.b-1.}
 
-\item{t.b}{The dates are treated using the student's t distribution by default (\code{normal=FALSE}). 
-The student's t-distribution has two parameters, t.a and t.b, set at 3 and 4 by default (see Christen and Perez, 2010). 
-If you want to assign narrower error distributions (more closely resembling the normal distribution), set t.a and t.b at for example 33 and 34 respectively (e.g., for specific dates in your .csv file). 
+\item{t.b}{The dates are treated using the student's t distribution by default (\code{normal=FALSE}).
+The student's t-distribution has two parameters, t.a and t.b, set at 3 and 4 by default (see Christen and Perez, 2010).
+If you want to assign narrower error distributions (more closely resembling the normal distribution), set t.a and t.b at for example 33 and 34 respectively (e.g., for specific dates in your .csv file).
 For symmetry reasons, t.a must always be equal to t.b-1.}
 
 \item{age.res}{Resolution of the date's distribution. Defaults to \code{date.res=100}.}

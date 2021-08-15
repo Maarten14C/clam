@@ -21,26 +21,25 @@
 #'   deptime.depth(20, FALSE) # to calculate accumulation rates in cm/yr
 #' 
 #' @export
-deptime.depth <- function(depth, yrcm=TRUE, prob=.95)
-  {
+deptime.depth <- function(depth, yrcm=TRUE, prob=.95) {
   chron <- get('chron')
   calrange <- get('calrange')
-    if(depth <= min(calrange[,1]) || depth >= max(calrange))
-      stop("Deposition times cannot be calculated for the top or bottom of the core. Please check the manual", call.=FALSE)
-    d <- max(which(calrange[,1] <= depth))
-    if(yrcm)
-      accrate <- (chron[d+1,]-chron[d-1,]) / (calrange[d+1,1]-calrange[d-1,1]) else
+  if(depth <= min(calrange[,1]) || depth >= max(calrange))
+    stop("Deposition times cannot be calculated for the top or bottom of the core. Please check the manual", call.=FALSE)
+  d <- max(which(calrange[,1] <= depth))
+  if(yrcm)
+    accrate <- (chron[d+1,]-chron[d-1,]) / (calrange[d+1,1]-calrange[d-1,1]) else
       accrate <- (calrange[d+1,1]-calrange[d-1,1]) / (chron[d+1,]-chron[d-1,])
-    acc <- density(accrate)
-    plot(acc, main="", xlab=if(yrcm) "yr/cm" else "cm/yr")
-    abline(h=0)
-    o <- order(acc$y, decreasing=TRUE)
-    acc <- cbind(acc$x[o], cumsum(acc$y[o])/sum(acc$y))
-    acc <- range(acc[acc[,2] <= prob,1])
-    rect(acc[1], 0, acc[2], -999, col=grey(.5), border=grey(.5))
-    cat(100*prob, "% ranges: ", acc[1], " to ", acc[2], if(yrcm) " yr/cm\n" else " cm/yr\n", sep="")
-	invisible(accrate)  
-  }
+  acc <- density(accrate)
+  plot(acc, main="", xlab=if(yrcm) "yr/cm" else "cm/yr")
+  abline(h=0)
+  o <- order(acc$y, decreasing=TRUE)
+  acc <- cbind(acc$x[o], cumsum(acc$y[o])/sum(acc$y))
+  acc <- range(acc[acc[,2] <= prob,1])
+  rect(acc[1], 0, acc[2], -999, col=grey(.5), border=grey(.5))
+  cat(100*prob, "% ranges: ", acc[1], " to ", acc[2], if(yrcm) " yr/cm\n" else " cm/yr\n", sep="")
+  invisible(accrate)
+}
 
 
 
@@ -63,30 +62,28 @@ deptime.depth <- function(depth, yrcm=TRUE, prob=.95)
 #'   summary(dp)
 #'   deptime.age(5000, yrcm=FALSE) # to calculate sedimentation times in cm/yr, so accumulation rates
 #' @export
-deptime.age <- function(age, yrcm=TRUE, prob=.95)
-  {
-    chron <- get('chron') 
-    calrange <- get('calrange')
-	
-    accrate <- numeric(ncol(chron))
-    # accrate <- c()
-    for(i in 1:ncol(chron))
-      {
-        a <- max(which(chron[,i] <= age))
-        if(yrcm)
-          accrate <- c(accrate, (chron[a+1,i]-chron[a-1,i]) / (calrange[a+1,1]-calrange[a-1,1])) else
-          accrate <- c( accrate, (calrange[a+1,1]-calrange[a-1,1]) / (chron[a+1,i]-chron[a-1,i]))
-      }
-    acc <- density(accrate)
-    plot(acc, main="", xlab=if(yrcm) "yr/cm" else "cm/yr")
-    abline(h=0)
-    o <- order(acc$y, decreasing=TRUE)
-    acc <- cbind(acc$x[o], cumsum(acc$y[o])/sum(acc$y))
-    acc <- range(acc[acc[,2] <= prob,1])
-    rect(acc[1], 0, acc[2], -999, col=grey(.5), border=grey(.5))
-    cat(100*prob, "% ranges: ", acc[1], " to ", acc[2], if(yrcm) " yr/cm\n" else " cm/yr\n", sep="")
-	invisible(as.double(accrate))
+deptime.age <- function(age, yrcm=TRUE, prob=.95) {
+  chron <- get('chron')
+  calrange <- get('calrange')
+
+  accrate <- numeric(ncol(chron))
+  # accrate <- c()
+  for(i in 1:ncol(chron)) {
+    a <- max(which(chron[,i] <= age))
+    if(yrcm)
+      accrate <- c(accrate, (chron[a+1,i]-chron[a-1,i]) / (calrange[a+1,1]-calrange[a-1,1])) else
+        accrate <- c( accrate, (calrange[a+1,1]-calrange[a-1,1]) / (chron[a+1,i]-chron[a-1,i]))
   }
+  acc <- density(accrate)
+  plot(acc, main="", xlab=if(yrcm) "yr/cm" else "cm/yr")
+  abline(h=0)
+  o <- order(acc$y, decreasing=TRUE)
+  acc <- cbind(acc$x[o], cumsum(acc$y[o])/sum(acc$y))
+  acc <- range(acc[acc[,2] <= prob,1])
+  rect(acc[1], 0, acc[2], -999, col=grey(.5), border=grey(.5))
+  cat(100*prob, "% ranges: ", acc[1], " to ", acc[2], if(yrcm) " yr/cm\n" else " cm/yr\n", sep="")
+  invisible(as.double(accrate))
+}
 
 
 
@@ -107,15 +104,13 @@ deptime.age <- function(age, yrcm=TRUE, prob=.95)
 #' plot_proxies(3)
 #' plot_proxies(3, revyr=FALSE)
 #' @export
-plot_proxies <- function(prox, errors=TRUE, proxcol=grey(0.5), revyr=TRUE)
-{
+plot_proxies <- function(prox, errors=TRUE, proxcol=grey(0.5), revyr=TRUE) {
   dat <- get('dat') #JEV warning
   calrange <- get('calrange') #JEV warning
   
   prx <- dat$proxies
   if(length(prox)>1) layout(matrix(1:length(prox), ncol=1))
-  for(j in 1:length(prox))
-  {
+  for(j in 1:length(prox)) {
     pr <- prx[which(!is.na(prx[,prox+1])),]
     ages <- array(0, dim=c(nrow(pr),3))
     for(i in 1:nrow(pr))

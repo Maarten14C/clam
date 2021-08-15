@@ -1,3 +1,11 @@
+# clam 2.4.0
+* calibrate() and calBP.14C() are now provided by the IntCal package
+* replaced .hpd() as now provided as hpd() by the IntCal package
+* replaced copyCalibrationCurve() with ccurve() in plots.R
+* added vignettes
+* some general cleanup of the code
+* if depthseq is provided, the depth scale is now plotted correctly
+
 # clam 2.3.9
 * removed closeAllConnections, as directed by CRAN's maintainers
 

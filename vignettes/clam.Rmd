@@ -1,0 +1,84 @@
+---
+title: clam - an introduction
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{clam - an introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+    \usepackage[utf8]{inputenc}
+---
+
+`clam`[^1] is an age-depth modelling tool which calibrates any radiocarbon dates, and then repeatedly chooses random age estimates from the (radiocarbon or other) dates and draws curves through them in order to estimate ages and their uncertainties.
+
+`clam` works through R (or Rstudio). The first time you are using `clam` on your computer, you will have to install its R package, by typing within the terminal of R:
+
+```{r, eval=FALSE}
+install.packages('clam')
+``` 
+
+To use `clam`, first the package has to be loaded (this will also load its companion package `IntCal`):
+
+```{r}
+library(clam)
+```
+
+The package comes with a pre-loaded dataset, called `Example`. Let's start by running this default core, using all default settings. Note R's comments about where the files are going to be placed, as we will need this information later. Press `y` and/or `Enter` to accept any suggestions about where it will place files, or alternatively provide a folder location using the option `coredir`.
+
+```{r, eval=FALSE}
+clam()
+```
+
+```{r, echo=FALSE, fig.width=5, fig.height=5}
+clam(, ask=FALSE)
+```
+
+`clam` will calibrate any C-14 dates, sample the age estimates, draw curves, calculate age ranges, produce graphs and provide information about the confidence ranges. The output graph, above, contains: the calibrated distributions in blue (and a green/blue cal BP for the core's surface), the age-depth model's 95% ranges (grey envelope) and its mean (black curve). Besides the graph, clam also produces files containing age estimates (95% ranges and the mean) for each depth (by default every cm from the top to the bottom core depth). This file can be found in the core's folder, together with files giving the calibrated ranges for the dated depths.
+
+Please don't over-interpret the Fit value, which is also reported. Sometimes age-depth models with low fit values, so with a good match of the dates to the model, will still be unrealistic, e.g. with very abrupt changes or even age reversals. Note also that the uncertainty estimates provided by classical modelling are likely to be underestimates of the true uncertainties[^2], and that Bayesian age-models such as OxCal's `P Sequence` or R packages `rbacon` or `BChron` are more robust alternatives which provide more realistic error estimates.
+
+***
+
+There are many options to produce different types of age-depth models. The default, `type=1`, is linear interpolation between the dated depths. Alternatives are linear or higher polynomial regression (`type=2`, the degree is set with the `smooth` parameter), cubic spline (`type=3`), smooth spline (`type=4`) or locally weighted spline (`type=5`). Hiatuses can be set at specific depths using `hiatus`, and bits where sedimenation was abrupt can also be modelled (`slump`, e.g., tephra layers). If some dates appear outlying they can be labelled such and excluded from the age-model (e.g. if the sixth and ninth dates counting from the top one appear outlying, type `outliers=c(6,9)`). If you prefer your ages as BC/AD, use `BCAD=TRUE`. Note that such decisions can have large impacts on the resulting age-depth model - please be critical about your assumptions.
+
+By default, ages are calculated for every cm from the top to the bottom dated depth. This can be adapted by specifying `dmin`, `dmax`, and `every` (default 1). A file with depths can also be provided. This must be in the core's folder (see later), start with the core's name, and end in `_depths.txt`. Then use `depths.file=TRUE` as option.
+
+Here is an example using some of the above options:
+
+```{r, echo=FALSE, eval=FALSE}
+clam(type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
+```
+
+```{r, fig.width=5, fig.height=5}
+clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
+```
+
+***
+
+When clam runs it will tell you where the files will be stored. The default is to use an 'umbrella' folder called `clam_runs` or `Cores`, and store the runs as folders within it. After running the default core, a folder 'Example' will appear in the umbrella folder, and this will contain the input and output files of the clam run.
+
+To run your own cores, make a new folder within the umbrella folder, and save it under a name, e.g., `MyCore`. Then place a file called `MyCore.csv` in that folder. This file wil contain the dates and should have the same formatting as the `Example.csv` file in the `Example` folder. It has headers and six fields (or seven if you want to include a variable `thickness` which will draw a rectangle showing the thickness of the dated depth):
+
+| Lab ID | C14 age | cal age | error | offset | depth |
+| ------ | ------- | ------- | ----- | ------ | ----- |
+|surface |         | -50     |   5   |        |    0  |
+|GR0001  |95       |         |  37   |        |   31  |
+|GR0002  |410      |         |  45   |        |  135  |
+|GR0003  |1502     |         |  37   |        |  298  |
+|GR0004  |2167     |         |  42   |        |  365  |
+
+Note that depths with radiocarbon dates should have the dates in the second/radiocarbon column, and no entry in the cal age colum. Dates already on the calendar scale should be empty in the second column and have their entry in the third/cal age column. Leave the offset column empty if no offset is assumed. All dates must have an error estimate - this cannot be left empty. If you produce your file in a spreadsheet program such as MS-Excel or LibreOffice, please also check its formatting in a plain-text editor to see if all looks OK (e.g., no orphan quotation marks, no empty lines, not too many commas).
+
+Then run `clam("MyCore.csv")`.
+
+For more information and options, run `?clam`. If you have any questions or ideas for improvements, please contact me at <maarten.blaauw@qub.ac.uk>.
+
+If you use `clam` in your publications, please cite Blaauw 2010[^3], the version used (e.g., 2.4.0), any non-default settings applied, and for radiocarbon dates their calibration curves (e.g., IntCal20[^4]). 
+
+![](./images/keepclam.png)
+
+[^1]: Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. *Quaternary Geochronology* 5, 512-518
+
+[^2]: Blaauw, M., Christen, J.A., Bennett, K.D., Reimer, P.J., 2018. Double the dates and go for Bayes – impacts of model choice, dating density and quality on chronologies. *Quaternary Science Reviews* 188, 58-66
+
+[^3]: Blaauw, M., 2010. Methods and code for 'classical' age-modelling of radiocarbon sequences. *Quaternary Geochronology* 5, 512-518
+
+[^4]: Reimer, P.J. et al., 2020. The IntCal20 Northern Hemisphere radiocarbon age calibration curve (0–55 cal kBP). *Radiocarbon* 62, 725-757
