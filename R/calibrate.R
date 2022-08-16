@@ -1,4 +1,4 @@
-# removed calibrate(), .hpd() and calBP.14C() as these are now provided by the IntCal R package. 
+# removed calibrate(), .hpd() and calBP.14C() as these are now provided by the rintcal R package. 
 # kept student.t() and .caldist() Aug 2021
 
 # See Christen and Perez 2009, Radiocarbon 51:1047-1059. Instead of assuming the standard Gaussian model (default in clam), a student t distribution can be used with two parameters. Christen and Perez 2009 suggest t.a = 3 and t.b = 4; this can be put as clam( calibt=c(3,4) )
@@ -31,11 +31,11 @@
 #' student.t() 
 #' 
 #' @export
-student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="",Cutoff=1e-5, times=8, rule=1) {
+student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="", Cutoff=1e-5, times=8, rule=1) {
   ccdir <-.validateDirectoryName(ccdir)
   # set the calibration curve
   if(ccdir=="")
-    ccdir = paste(system.file("extdata", package="IntCal"), "/", sep="")
+    ccdir = paste(system.file("extdata", package="rintcal"), "/", sep="")
 
   if(cc == 0) {
     x <- seq(y-(times*error), y+(times*error), length=500)
@@ -67,11 +67,11 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
       if (length(postbomb) == 0) 
         stop("Warning, negative ages require a postbomb curve. Provide value for postbomb")
     else {
-      if(postbomb==1) bomb <- read.table(system.file("extdata","postbomb_NH1.14C", package="IntCal"))[,1:3] else
-        if(postbomb==2) bomb <- read.table(system.file("extdata","postbomb_NH2.14C", package="IntCal"))[,1:3] else
-          if(postbomb==3) bomb <- read.table(system.file("extdata","postbomb_NH3.14C", package="IntCal"))[,1:3] else
-            if(postbomb==4) bomb <- read.table(system.file("extdata","postbomb_SH1-2.14C", package="IntCal"))[,1:3] else
-              if(postbomb==5) bomb <- read.table(system.file("extdata","postbomb_SH3.14C", package="IntCal"))[,1:3] else
+      if(postbomb==1) bomb <- read.table(system.file("extdata","postbomb_NH1.14C", package="rintcal"))[,1:3] else
+        if(postbomb==2) bomb <- read.table(system.file("extdata","postbomb_NH2.14C", package="rintcal"))[,1:3] else
+          if(postbomb==3) bomb <- read.table(system.file("extdata","postbomb_NH3.14C", package="rintcal"))[,1:3] else
+            if(postbomb==4) bomb <- read.table(system.file("extdata","postbomb_SH1-2.14C", package="rintcal"))[,1:3] else
+              if(postbomb==5) bomb <- read.table(system.file("extdata","postbomb_SH3.14C", package="rintcal"))[,1:3] else
                 stop("Warning, cannot find postbomb curve #", postbomb, " (use values of 1 to 5 only)")
               
       bomb.x <- seq(max(bomb[, 1]), min(bomb[, 1]), length = 500)

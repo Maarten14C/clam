@@ -1,3 +1,6 @@
+# clam 2.5.0
+* now points to the renamed rintcal package
+
 # clam 2.4.0
 * calibrate() and calBP.14C() are now provided by the IntCal package
 * replaced .hpd() as now provided as hpd() by the IntCal package
