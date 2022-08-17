@@ -15,7 +15,7 @@ NULL
 
 # do: 
 
-# done: Add vignettes. 
+# done: 
 
 # so that functions such as pMC.age etc. are available immediately
 library(rintcal)
