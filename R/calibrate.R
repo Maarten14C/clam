@@ -7,14 +7,14 @@
 
 #(t.b + ((y-x)^2) / (2*(error^2))) ^ (-1*(t.a+0.5))
 
-#' @name student.t 
-#' @title Comparison dates calibrated using both the student-t distribution and the the normal distribution.
-#' @description Visualise how a date calibrates using the student-t distribution and the the normal distribution.
-#' @details Radiocarbon and other dates are usually modelled using the normal distribution (red curve). The student-t approach (grey distribution) however allows for wider tails and thus tends to better accommodate outlying dates. This distribution requires two parameters, called 'a' and 'b'.
+#' @name calib.t 
+#' @title Comparison dates calibrated using both the t distribution (Christen and Perez 2009) and the normal distribution.
+#' @description Visualise how a date calibrates using the t distribution and the normal distribution.
+#' @details Radiocarbon and other dates are usually modelled using the normal distribution (red curve). The t approach (grey distribution) however allows for wider tails and thus tends to better accommodate outlying dates. This distribution requires two parameters, called 'a' and 'b'.
 #' @param y The reported mean of the date.
 #' @param error The reported error of the date.
-#' @param t.a Value for the student-t parameter \code{a}.
-#' @param t.b Value for the student-t parameter \code{b}.
+#' @param t.a Value for the t parameter \code{a}.
+#' @param t.b Value for the t parameter \code{b}.
 #' @param postbomb Which postbomb curve to use for negative 14C dates
 #' @param cc calibration curve for C14 dates (1, 2 or 3).
 #' @param cc1 For northern hemisphere terrestrial C14 dates.
@@ -28,10 +28,10 @@
 #' @param rule How should R's approx function deal with extrapolation. If \code{rule=1}, the default, then NAs are returned for such points and if it is 2, the value at the closest data extreme is used.
 #' @author Maarten Blaauw
 #' @examples 
-#' student.t() 
+#' calib.t() 
 #' 
 #' @export
-student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="", Cutoff=1e-5, times=8, rule=1) {
+calib.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="IntCal20", cc2="Marine20", cc3="SHCal20", cc4="mixed", ccdir="", Cutoff=1e-5, times=8, rule=1) {
   ccdir <-.validateDirectoryName(ccdir)
   # set the calibration curve
   if(ccdir=="")
@@ -101,7 +101,7 @@ student.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="
 	  ylim = c(0, max(t.cal[,2], norm.cal[, 2])), col = 2, lwd = 1.5)
     polygon(t.cal, col = rgb(0, 0, 0, 0.25), border = rgb(0, 0, 0, 0.5))
     legend("topleft", "Gaussian", text.col = 2, bty = "n")
-    legend("topright", paste("student-t (a=", t.a, ", b=", t.b, ")", sep = ""), bty = "n", text.col = grey(0.4))
+    legend("topright", paste("t (a=", t.a, ", b=", t.b, ")", sep = ""), bty = "n", text.col = grey(0.4))
   }     
 
 }

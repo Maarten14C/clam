@@ -15,7 +15,7 @@ vignette: >
 install.packages('clam')
 ``` 
 
-To use `clam`, first the package has to be loaded (this will also load its companion package `rintcal`):
+To use `clam`, first the package has to be loaded (this will also load its companion package `rintcal` which provides the IntCal radiocarbon calibration curves):
 
 ```{r}
 library(clam)

@@ -12,9 +12,9 @@ Ages were calculated every 1 [every] cm [depth], from 0 [dmin] to 770 [dmax] cm
 A slump was excised between 250 and 220 cm
 
 Dates assumed outlying [outliers]: 6 (GR0005) 
-A hiatus was inferred at 470 cm [hiatus] 
+A hiatus was inferred at 470 cm [hiatus]
 
-Goodness-of-fit (-log, lower is better):  7.8 
-Any models with age-depth reversals were removed
+Goodness-of-fit (-log, lower is better): 7.33 
+Any models with age-depth reversals were removed 
 
-Produced Tue Aug 16 21:33:28 2022
+Produced  Wed Aug 17 09:10:53 2022

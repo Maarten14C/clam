@@ -143,7 +143,7 @@
     calrange[,5] <- 1/calrange[,5]
   calrange[,2:4] <- round(calrange[,2:4], decimals)
   ifelse(length(runname)==0, runname <- runnames[type], runname)
-  if(depths.file && file.exists(dd <- paste(namedir, name, "/", name, "_depths.txt", sep=""))) {
+  if(depths.file && file.exists(dd <- paste0(namedir, name, "/", name, "_depths.txt"))) {
     dd <- read.table(dd)[,1]
     #this <- c()
     this <- numeric(length(dd))
@@ -215,22 +215,22 @@
       cat("\n\nDates outside calibration curve and ignored: ", file=set.file)
       for(i in 1:length(dat$outside)) cat(dat$outside[i], " ", sep="", file=set.file)
     }
-    cat(paste(
+    cat(paste0(
       if(length(hiatus) > 0)
         paste("\nA hiatus was inferred at", hiatus, depth, "[hiatus]"),
         "\n\nGoodness-of-fit (-log, lower is better): ", gfit,
       if(reversal) "\nSome age-depth reversals occurred"),
       if(remove.reverse) "\nAny models with age-depth reversals were removed",
-      "\n\nProduced ", date(), sep="", file=set.file)
+      "\n\nProduced ", date(), file=set.file)
     close(set.file)
 
   if(plotpdf) {
-    pdf(file=paste(dat$coredir, name, runname, ".pdf", sep=""))
+    pdf(file=paste0(dat$coredir, name, runname, ".pdf"))
     .ageplot(yrmin, yrmax, dmin, dmax, revaxes, revd, revyr, dlab, yrlab, hiatus, depthseq, outliers, plotrange, BCAD, greyscale, if(length(greyscale)>0) chron else NULL, C14col, outcol, outlsize, bestcol, rangecol, dat, calrange, depth, calhght, maxhght, mirror, calcol, slump, slumpcol, plotname, name, bty, mar, mgp, ash)
     dev.off()
   }
   if(plotpng) {
-    png(filename = paste(dat$coredir, name, runname, ".png", sep=""))
+    png(filename = paste0(dat$coredir, name, runname, ".png"))
     .ageplot(yrmin, yrmax, dmin, dmax, revaxes, revd, revyr, dlab, yrlab, hiatus, depthseq, outliers, plotrange, BCAD, greyscale, if(length(greyscale)>0) chron else NULL, C14col, outcol, outlsize, bestcol, rangecol, dat, calrange, depth, calhght, maxhght, mirror, calcol, slump, slumpcol, plotname, name, bty, mar, mgp, ash)
     dev.off()
   }
@@ -278,7 +278,7 @@ clam_runs <- list.files("clam_runs/")
   dir <- suppressWarnings(normalizePath(dir))
   lastchar <- substr(dir, nchar(dir), nchar(dir))
   if(lastchar != "/" & lastchar != "\\" & lastchar != "" & lastchar != "." )
-    dir <- paste(dir, "/", sep="") # does this work in Windows?
+    dir <- paste0(dir, "/") # does this work in Windows?
   return(dir)
 }
 

@@ -197,7 +197,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
 
   coredir <- assign_coredir(coredir, core, ask)
   if(core == "Example") {
-    dir.create(paste(coredir, "Example/", sep=""), showWarnings = FALSE, recursive = TRUE)
+    dir.create(file.path(coredir, "Example/"), showWarnings = FALSE, recursive = TRUE)
     fileCopy <- system.file("extdata/Example/", package="clam")
     file.copy(fileCopy, coredir, recursive = TRUE, overwrite=FALSE)
   } 
@@ -216,7 +216,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     message(" Warning, depths not in ascending order (top ones should come first).")
 
   # avoid Windows/Mac habit of silently adding .txt extension to plain text files
-  bill <- list.files(paste(coredir, core, sep=""), pattern=".csv.txt")
+  bill <- list.files(file.path(coredir, core), pattern=".csv.txt")
   if(length(bill) > 0) {
     message("Removing unnecessary .txt extension from .csv file", bill[1])
     file.rename(file.path(coredir, core, paste0(core, ".csv.txt")),
@@ -408,7 +408,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   .ageplot(yrmin, yrmax, dmin, dmax, revaxes, revd, revyr, yrlab, dlab, hiatus, depthseq, outliers, plotrange, BCAD, greyscale, if(length(greyscale)>0) get('chron') else NULL, C14col, outcol, outlsize, bestcol, rangecol, dat, calrange, depth, calhght, maxhght, mirror, calcol, slump, slumpcol, plotname, core, bty, mar, mgp, ash)
 
   # write files providing calibrated dates, age-model and settings
-  colnames(calrange) <- c("Depth", paste("min.", 100*prob, "%range", sep=""), paste("max.", 100*prob, "%range", sep=""), "point")
+  colnames(calrange) <- c("Depth", paste0("min.", 100*prob, "%range"), paste0("max.", 100*prob, "%range"), "point")
   .write.clam(dat, coredir, runname, calrange, core, prob, type, remove.reverse, smooth, wghts, its, outliers, ignore, est, BCAD, yrsteps, every, decimals, cmyr, depth, depthseq, hiatus, gfit, reversal, plotpdf, plotpng, yrmin, yrmax, dmin, dmax, dlab, yrlab, plotrange, greyscale, if(length(greyscale)>0) get('chron') else NULL, C14col, outcol, outlsize, bestcol, rangecol, calhght, maxhght, mirror, calcol, slump, slumpcol, revaxes, revyr, revd, calibt, youngest, extradates, plotname, calcurve, ccname, postbomb, pbnames, depths.file, bty, mar, mgp, ash)
 
   if(storedat) {

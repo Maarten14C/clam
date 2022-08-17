@@ -1,7 +1,7 @@
 
 .ageplot <- function(yrmin, yrmax, dmin, dmax, revaxes, revd, revyr, yrlab, dlab, hiatus, depthseq, outliers, plotrange, BCAD, greyscale, chron, C14col, outcol, outlsize, bestcol, rangecol, dat, calrange, depth, calhght, maxhght, mirror, calcol, slump, slumpcol, plotname, name, bty="l", mar, mgp, ash=FALSE) {
     # set up initial parameters
-    if(length(dlab)==0) dlab <- paste("Depth (", depth, ")", sep="")
+    if(length(dlab)==0) dlab <- paste0("Depth (", depth, ")")
     ifelse(BCAD || !revyr, yr.lim <- c(yrmin, yrmax), yr.lim <- c(yrmax, yrmin))
     if(revd) d.lim <- c(dmax, dmin) else d.lim <- c(dmin, dmax)
 
