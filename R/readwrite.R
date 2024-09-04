@@ -118,7 +118,7 @@
     }
     dat$calib[[i]] <- calib
     #dat$hpd[[i]] <- .hpd(calib, prob=prob, hpdsteps=hpdsteps, yrsteps=yrsteps, rule=rule)
-    dat$hpd[[i]] <- rintcal::hpd(calib, prob=prob) # new Aug 2021
+    dat$hpd[[i]] <- rice::hpd(calib, prob=prob) # new Aug 2021
     dat$mid1[i] <- (dat$hpd[[i]][1] + dat$hpd[[i]][2*nrow(dat$hpd[[i]])])/2
     yrs <- calib[,1]
     dat$mid2[i] <- mean(c(max(yrs), min(yrs)))

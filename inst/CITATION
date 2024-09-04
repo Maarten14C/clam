@@ -1,0 +1,14 @@
+bibentry("Article",
+author = "Maarten Blaauw",
+title = "Methods and code for ‘classical’ age-modelling of radiocarbon sequences",
+journal = "Quaternary Geochronology",
+volume = "5",
+number = "5",
+pages = "512 -- 518",
+year = "2010",
+issn = "1871-1014",
+doi = "10.1016/j.quageo.2010.01.002",
+
+textVersion = "Blaauw, M., 2010. Methods and code for ‘classical’ age-modelling of radiocarbon sequences. Quaternary Geochronology 5(5), 512-518. doi:10.1016/j.quageo.2010.01.002"
+
+)

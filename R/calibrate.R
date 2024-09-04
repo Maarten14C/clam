@@ -1,5 +1,5 @@
-# removed calibrate(), .hpd() and calBP.14C() as these are now provided by the rintcal R package. 
-# kept student.t() and .caldist() Aug 2021
+# functions such as calibrate(), .hpd() and calBP.14C() are now provided by the rice R package.
+# kept calib.t() and .caldist() Aug 2021
 
 # See Christen and Perez 2009, Radiocarbon 51:1047-1059. Instead of assuming the standard Gaussian model (default in clam), a student t distribution can be used with two parameters. Christen and Perez 2009 suggest t.a = 3 and t.b = 4; this can be put as clam( calibt=c(3,4) )
 .calibt <- function(t.a, t.b, f.cage, f.error, f.mu, f.sigma) # removed theta as par

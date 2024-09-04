@@ -15,7 +15,7 @@ vignette: >
 install.packages('clam')
 ``` 
 
-To use `clam`, first the package has to be loaded (this will also load its companion package `rintcal` which provides the IntCal radiocarbon calibration curves):
+To use `clam`, first the package has to be loaded (this will also load its companion packages `rice` and `rintcal` which deal with radiocarbon calibration):
 
 ```{r}
 library(clam)
@@ -67,7 +67,7 @@ To run your own cores, make a new folder within the umbrella folder, and save it
 
 Note that depths with radiocarbon dates should have the dates in the second/radiocarbon column, and no entry in the cal age column. Dates already on the calendar scale should be empty in the second column and have their entry in the third/cal age column. Leave the offset column empty if no offset is assumed. All dates must have an error estimate - this cannot be left empty. If you produce your file in a spreadsheet program such as MS-Excel or LibreOffice, please also check its formatting in a plain-text editor to see if all looks OK (e.g., no orphan quotation marks, no empty lines, not too many commas).
 
-Then run `clam("MyCore.csv")`.
+Then run `clam("MyCore")`.
 
 For more information and options, run `?clam`. If you have any questions or ideas for improvements, please contact me at <maarten.blaauw@qub.ac.uk>.
 

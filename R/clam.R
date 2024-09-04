@@ -1,24 +1,10 @@
 
-#' clam
-#' 
-#' Classical (non-Bayesian) age-depth modelling.
-#' 
-#' @docType package
-#' @author Maarten Blaauw <maarten.blaauw@qub.ac.uk>
-#' @importFrom grDevices dev.off grey pdf png rgb
-#' @importFrom graphics abline image layout legend lines par points polygon rect plot
-#' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
-#' @importFrom utils packageName read.csv read.table write.table 
-#' @import rintcal
-#' @name clam
-NULL  
-
 # do: 
 
 # done: 
 
 # so that functions such as pMC.age etc. are available immediately
-library(rintcal)
+library(rice)
 
 #' @name clam
 #' @title The main age-depth modelling function
