@@ -1,6 +1,6 @@
 ## Test environments
-* local Mac OS, R 4.2.1
-* rhub and win-builder (devel)
+* local Fedora linux 40, R 4.4.1
+* win-devel
 
 ## R CMD check results
 
