@@ -1,3 +1,6 @@
+# clam 2.6.1
+* further steps in separating 'rice' from 'rintcal' within 'clam'
+
 # clam 2.6.0
 * now uses the 'rintcal' package for loading calibration curves, and 'rice' for additional radiocarbon/calibration functions
 

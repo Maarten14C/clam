@@ -2,7 +2,6 @@
 
 export(add.dates)
 export(calib.t)
-export(ccurve)
 export(clam)
 export(deptime.age)
 export(deptime.depth)

@@ -71,7 +71,7 @@ Then run `clam("MyCore")`.
 
 For more information and options, run `?clam`. If you have any questions or ideas for improvements, please contact me at <maarten.blaauw@qub.ac.uk>.
 
-If you use `clam` in your publications, please cite Blaauw 2010[^3], the version used (e.g., 2.4.0), any non-default settings applied, and for radiocarbon dates their calibration curves (e.g., IntCal20[^4]). 
+If you use `clam` in your publications, please cite Blaauw 2010[^3], the version used (e.g., 2.6.1), any non-default settings applied, and for radiocarbon dates their calibration curves (e.g., IntCal20[^4]). 
 
 ![](./images/keepclam.png)
 

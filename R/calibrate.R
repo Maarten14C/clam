@@ -98,7 +98,7 @@ calib.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="In
     t.cal <- t.cal[acc, ]
     
     plot(norm.cal, type = "l", xlab = "cal BP", xlim = range(c(t.cal[,1], norm.cal[, 1]))[2:1], ylab = "",
-	  ylim = c(0, max(t.cal[,2], norm.cal[, 2])), col = 2, lwd = 1.5)
+      ylim = c(0, max(t.cal[,2], norm.cal[, 2])), col = 2, lwd = 1.5)
     polygon(t.cal, col = rgb(0, 0, 0, 0.25), border = rgb(0, 0, 0, 0.5))
     legend("topleft", "Gaussian", text.col = 2, bty = "n")
     legend("topright", paste("t (a=", t.a, ", b=", t.b, ")", sep = ""), bty = "n", text.col = grey(0.4))
