@@ -4,4 +4,6 @@
 ^Meta$
 ^CRAN-SUBMISSION$
 ^cran-comments.md.kate-swp$
-^.DS_Store$
+^\.git$
+^\.github/
+^\.DS_Store$
