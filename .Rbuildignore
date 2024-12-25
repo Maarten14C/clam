@@ -5,5 +5,5 @@
 ^CRAN-SUBMISSION$
 ^cran-comments.md.kate-swp$
 ^\.git$
-^\.github/
+^\.github$
 ^\.DS_Store$

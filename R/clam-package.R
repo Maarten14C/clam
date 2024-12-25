@@ -12,7 +12,7 @@
 #' @importFrom stats approx density dnorm lm loess pnorm predict qnorm quantile rnorm runif smooth.spline spline weighted.mean
 #' @importFrom utils packageName read.csv read.table write.table
 #' @importFrom data.table fread fwrite
-#' @import rice
+#' @importFrom rice hpd
 #' @name clam
 "_PACKAGE"
 

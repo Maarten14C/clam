@@ -1,12 +1,12 @@
 
 # read the data and perform first calculations incl. calibrations
 .read.clam <- function(name, namedir, ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb, rule=1) {
-  coredir=paste(namedir, name, "/", sep="")
-  if(!file.exists(paste(namedir, name, sep="")))
-    stop(paste("\n\n Warning, cannot find a folder within", namedir," named ", name, ". Have you saved it in the right place and with the right name? Please check the manual\n\n", sep=""), call.=FALSE)
-  if(!file.exists(paste(coredir, name, ext, sep="")))
-    stop(paste(" \n\n Warning, cannot find file ", name, ".csv in folder",namedir, name, ". Have you saved it in the right place and named it correctly? Please check the manual\n\n", sep=""), call.=FALSE)
-  dets <- suppressWarnings(read.table(paste(coredir, name, ext, sep=""), comment.char="", header=TRUE, sep=sep, na.strings = c("#N/A!", "NA", "@NA")))
+  coredir=paste0(namedir, name, "/")
+  if(!file.exists(paste0(namedir, name)))
+    stop(paste0("\n\n Warning, cannot find a folder within", namedir," named ", name, ". Have you saved it in the right place and with the right name? Please check the manual\n\n"), call.=FALSE)
+  if(!file.exists(paste0(coredir, name, ext)))
+    stop(paste0(" \n\n Warning, cannot find file ", name, ".csv in folder",namedir, name, ". Have you saved it in the right place and named it correctly? Please check the manual\n\n"), call.=FALSE)
+  dets <- suppressWarnings(read.table(paste0(coredir, name, ext), comment.char="", header=TRUE, sep=sep, na.strings = c("#N/A!", "NA", "@NA")))
 
   # read the file with the dating information
   dat <- list(coredir=coredir, name=name, calib=list(), ignore=NULL, ID=character(nrow(dets)), cage=numeric(nrow(dets)),
@@ -42,11 +42,11 @@
   x <- 0
   for(i in 2:7) if(is.factor(dets[,i])) x <- 1
   if(x == 1)
-    stop(paste("\n Some value fields in ", name, ".csv contain letters, please adapt", sep=""), call.=FALSE)
+    stop(paste0("\n Some value fields in ", name, ".csv contain letters, please adapt"), call.=FALSE)
   if(length(dets[is.na(dets[,2]),2])+length(dets[is.na(dets[,3]),3]) != nrow(dets))
-    stop(paste("\n Remove duplicate entries within the C14 and calendar fields in ", name, ".csv", sep=""), call.=FALSE)
+    stop(paste0("\n Remove duplicate entries within the C14 and calendar fields in ", name, ".csv"), call.=FALSE)
   if(min(dets[,4]) <= 0)
-    stop(paste("\n Errors of dates should be larger than zero. Please adapt ", name, ".csv", sep=""), call.=FALSE)
+    stop(paste0("\n Errors of dates should be larger than zero. Please adapt ", name, ".csv"), call.=FALSE)
   dat$ID <- as.character(dets[,1])
 
   # correct for any reservoir effect
@@ -98,7 +98,7 @@
   # find distribution (calibrated if 14C) and point estimates for each date
   for(i in 1:length(dat$depth)) {
     if(length(extradates) > 0 && i > nrow(dets)) {
-      tmp <- read.table(paste(dat$coredir, name, "_", extradates[i-nrow(dets)], ".txt", sep=""))
+      tmp <- read.table(paste0(dat$coredir, name, "_", extradates[i-nrow(dets)], ".txt"))
       calib <- cbind(tmp[,1], tmp[,2]/sum(tmp[,2]))
     } else
       if(is.na(dat$cage[[i]])) {

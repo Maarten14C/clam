@@ -35,7 +35,7 @@ calib.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="In
   ccdir <-.validateDirectoryName(ccdir)
   # set the calibration curve
   if(ccdir=="")
-    ccdir = paste(system.file("extdata", package="rintcal"), "/", sep="")
+    ccdir = paste0(system.file("extdata", package="rintcal"), "/")
 
   if(cc == 0) {
     x <- seq(y-(times*error), y+(times*error), length=500)
@@ -47,14 +47,14 @@ calib.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="In
     plot(x, norm.cal, type="l", xlab="cal BP", xlim=range(x)[2:1], ylab="", ylim=c(0, max(t.cal[,2], norm.cal)), col=2, lwd=1.5)
     polygon(t.cal, col=rgb(0,0,0,.25), border=rgb(0,0,0,.5))
     legend("topleft", "Gaussian", text.col=2, bty="n")
-    legend("topright", paste("student-t (a=", t.a, ", b=", t.b, ")", sep=""), bty="n", text.col=grey(.4))
+    legend("topright", paste0("student-t (a=", t.a, ", b=", t.b, ")"), bty="n", text.col=grey(.4))
   } else {
     if(cc1=="IntCal20") cc1 <- read.table(paste0(ccdir, "3Col_intcal20.14C")) else
-      cc1 <- read.csv(paste(ccdir, cc1,  sep=""))[,1:3]
+      cc1 <- read.csv(paste0(ccdir, cc1))[,1:3]
     if(cc2=="Marine20") cc2 <- read.table(paste0(ccdir, "3Col_marine20.14C")) else
-      cc2 <- read.csv(paste(ccdir, cc2,  sep=""))[,1:3]
+      cc2 <- read.csv(paste0(ccdir, cc2))[,1:3]
     if(cc3=="SHCal20") cc3 <- read.table(paste0(ccdir, "3Col_shcal20.14C")) else
-      cc3 <- read.table(paste(ccdir, cc3,  sep=""))[,1:3]
+      cc3 <- read.table(paste0(ccdir, cc3))[,1:3]
     if(cc4=="mixed") {
       fl <- paste0(ccdir, "mixed.14C")
       if(file.exists(fl))
@@ -101,7 +101,7 @@ calib.t <- function(y=2450, error=50, t.a=3, t.b=4, cc=1, postbomb=NULL, cc1="In
       ylim = c(0, max(t.cal[,2], norm.cal[, 2])), col = 2, lwd = 1.5)
     polygon(t.cal, col = rgb(0, 0, 0, 0.25), border = rgb(0, 0, 0, 0.5))
     legend("topleft", "Gaussian", text.col = 2, bty = "n")
-    legend("topright", paste("t (a=", t.a, ", b=", t.b, ")", sep = ""), bty = "n", text.col = grey(0.4))
+    legend("topright", paste0("t (a=", t.a, ", b=", t.b, ")"), bty = "n", text.col = grey(0.4))
   }     
 
 }
