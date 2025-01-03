@@ -1,7 +1,7 @@
 Package: clam
 Type: Package
 Title: Classical Age-Depth Modelling of Cores from Deposits
-Version: 2.6.1
+Version: 2.6.2
 Authors@R: c(
   person("Maarten", "Blaauw", email = "maarten.blaauw@qub.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5680-1515")),
   person("J. Andres", "Christen", role = "ctb", comment = c(ORCID = "0000-0002-5795-4345")),
@@ -11,7 +11,7 @@ Description: Performs 'classical' age-depth modelling of dated sediment deposits
 License: GPL (>= 2)
 Language: en-GB
 Imports: grDevices, graphics, stats, utils, data.table, rintcal (>= 1.1.1)
-Depends: rice (>= 0.5.0)
+Depends: rice (>= 1.0.0)
 RoxygenNote: 7.3.2
 Suggests: knitr, rmarkdown, utf8
 VignetteBuilder: knitr

@@ -1,3 +1,7 @@
+# clam 2.6.2
+* changed the use of tempdir() in documentation examples (to avoid Errors on CRAN package checks)
+* linking to updated rice and rintcal
+
 # clam 2.6.1
 * further steps in separating 'rice' from 'rintcal' within 'clam'
 
