@@ -78,7 +78,7 @@ Add dated depths to plots, e.g. to show dates that weren't used in the age-depth
 Sometimes it is useful to add additional dating information to age-depth plots, e.g., to show outliers or how dates calibrate with different estimated offsets.
 }
 \examples{
-  clam()
+  clam(, ask=FALSE)
   add.dates(5000, 100, 60)
 }
 \author{

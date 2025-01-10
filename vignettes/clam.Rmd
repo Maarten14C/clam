@@ -27,8 +27,10 @@ The package comes with a pre-loaded dataset, called `Example`. Let's start by ru
 clam()
 ```
 
+
+
 ```{r, echo=FALSE, fig.width=5, fig.height=5}
-clam(ask=FALSE)
+clam(,ask=FALSE)
 ```
 
 `clam` will calibrate any C-14 dates, sample the age estimates, draw curves, calculate age ranges, produce graphs and provide information about the confidence ranges. The output graph, above, contains: the calibrated distributions in blue (and a green/blue cal BP for the core's surface), the age-depth model's 95% ranges (grey envelope) and its mean (black curve). Besides the graph, clam also produces files containing age estimates (95% ranges and the mean) for each depth (by default every cm from the top to the bottom core depth). This file can be found in the core's folder, together with files giving the calibrated ranges for the dated depths.

@@ -9,7 +9,7 @@ Calendar age point estimates for depths based on weighted average of all age-dep
 Calendar scale used: cal BP [BCAD=FALSE] at a resolution of 1 yr [yrsteps]
 Ages were calculated every 1 [every] cm [depth], from 0 [dmin] to 673 [dmax] cm
 
-Goodness-of-fit (-log, lower is better): 6.96 
+Goodness-of-fit (-log, lower is better): 6.92 
 Any models with age-depth reversals were removed 
 
-Produced  Fri Jan 10 12:53:01 2025
+Produced  Fri Jan 10 20:55:21 2025
