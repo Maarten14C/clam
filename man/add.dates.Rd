@@ -78,9 +78,7 @@ Add dated depths to plots, e.g. to show dates that weren't used in the age-depth
 Sometimes it is useful to add additional dating information to age-depth plots, e.g., to show outliers or how dates calibrate with different estimated offsets.
 }
 \examples{
-  coredir <- tempfile()
-  dir.create(coredir)  # Ensure the directory exists
-  clam(coredir=coredir)
+  clam()
   add.dates(5000, 100, 60)
 }
 \author{

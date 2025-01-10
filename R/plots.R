@@ -130,9 +130,7 @@
 #' @author Maarten Blaauw, J. Andres Christen
 #' @return A date's distribution, added to an age-depth plot.
 #' @examples
-#'   coredir <- tempfile()
-#'   dir.create(coredir)  # Ensure the directory exists
-#'   clam(coredir=coredir)
+#'   clam()
 #'   add.dates(5000, 100, 60)
 #' @export
 add.dates <- function(mn, sdev, depth, cc=1, above=1e-3, exx=50, normal=TRUE, normalise=TRUE, t.a=3, t.b=4, age.res=100, times=20, col=rgb(1,0,0,.5), border=rgb(1,0,0,.5), rotate.axes=FALSE, mirror=TRUE, up=TRUE, BCAD=FALSE)  {
