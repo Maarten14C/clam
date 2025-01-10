@@ -15,7 +15,10 @@
 #' @author Maarten Blaauw
 #' @return Returns (invisibly) the modelled deposition times for a specific depths, a histogram and confidence ranges.
 #' @examples
-#'   clam(coredir=tempdir(), storedat=TRUE) 
+#'   mydir <- file.path(tempdir(), "my_temp_dir")
+#'   if(!dir.exists(mydir))
+#'     dir.create(mydir)
+#'   clam(coredir=mydir, storedat=TRUE)
 #'   dp <- deptime.depth(20)
 #'   summary(dp)
 #'   deptime.depth(20, FALSE) # to calculate accumulation rates in cm/yr
@@ -56,8 +59,11 @@ deptime.depth <- function(depth, yrcm=TRUE, prob=.95) {
 #' @param prob Probability level at which to calculate the ranges.
 #' @author Maarten Blaauw
 #' @return Returns (invisibly) the modelled deposition times at a specific age, a histogram and confidence ranges.
-#' @examples 
-#'   clam(coredir=tempdir(), storedat=TRUE)
+#' @examples
+#'   mydir <- file.path(tempdir(), "my_temp_dir")
+#'   if(!dir.exists(mydir))
+#'     dir.create(mydir)
+#'   clam(coredir=mydir, storedat=TRUE)
 #'   dp <- deptime.age(5000)
 #'   summary(dp)
 #'   deptime.age(5000, yrcm=FALSE) # to calculate sedimentation times in cm/yr, so accumulation rates
@@ -100,9 +106,12 @@ deptime.age <- function(age, yrcm=TRUE, prob=.95) {
 #' @author Maarten Blaauw
 #' @return A plot of the age model function with proxies.
 #' @examples 
-#' clam(coredir=tempdir(), proxies=TRUE)
-#' plot_proxies(3)
-#' plot_proxies(3, revyr=FALSE)
+#'   mydir <- file.path(tempdir(), "my_temp_dir")
+#'   if(!dir.exists(mydir))
+#'     dir.create(mydir)
+#'   clam(coredir=mydir, proxies=TRUE)
+#'   plot_proxies(3)
+#'   plot_proxies(3, revyr=FALSE)
 #' @export
 plot_proxies <- function(prox, errors=TRUE, proxcol=grey(0.5), revyr=TRUE) {
   dat <- get('dat') #JEV warning

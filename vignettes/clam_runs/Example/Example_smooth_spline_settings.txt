@@ -14,7 +14,7 @@ A slump was excised between 250 and 220 cm
 Dates assumed outlying [outliers]: 6 (GR0005) 
 A hiatus was inferred at 470 cm [hiatus]
 
-Goodness-of-fit (-log, lower is better): 7.56 
+Goodness-of-fit (-log, lower is better): 7.15 
 Any models with age-depth reversals were removed 
 
-Produced  Tue Dec 24 13:44:21 2024
+Produced  Fri Jan 10 17:45:03 2025

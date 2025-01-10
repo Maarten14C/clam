@@ -4,7 +4,7 @@
 # done: 
 
 # so that functions such as pMC.age etc. are available immediately
-library(rice)
+# library(rice)
 
 #' @name clam
 #' @title The main age-depth modelling function
@@ -167,8 +167,10 @@ library(rice)
 #' @author Maarten Blaauw
 #' @return Age model construction together with a text output and files saved to a folder in the \code{coredir/core} directory.
 #' @examples 
-#'  clam(, coredir=tempdir()) # Create the example in Cores/Example folder
-#'  clam(, coredir=tempdir(), extradates=470) 
+#'   mydir <- tempfile("my_clam_folder")
+#'   dir.create(mydir)
+#'   clam(, coredir=mydir) # Create the example in Cores/Example folder
+#'   clam(, coredir=mydir, extradates=470)
 #' 
 #' @references
 #' Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
