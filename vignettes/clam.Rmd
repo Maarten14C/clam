@@ -27,40 +27,10 @@ The package comes with a pre-loaded dataset, called `Example`. Let's start by ru
 clam()
 ```
 
-```{r}
-plot(1:10)
-1-1
-2+2
-3+3
-# Create a temporary directory for clam_runs
-clam_temp_dir <- file.path(tempdir(), "clam_runs")
-if (!dir.exists(clam_temp_dir)) {
-  dir.create(clam_temp_dir)
-}
-
-# Create a subdirectory within clam_runs
-example_dir <- file.path(clam_temp_dir, "Example")
-if (!dir.exists(example_dir)) {
-  dir.create(example_dir)
-}
-
-# Assign the coredir to the temporary example directory
-coredir <- example_dir
-
-print(paste("Current working directory:", getwd()))
-print(paste("Temporary directory:", tempdir()))
-print(paste("Coredir provided:", coredir))
-
-if (!is.null(coredir)) {
-  print(paste("Directory exists:", dir.exists(coredir)))
-  print(paste("Writable:", file.access(coredir, 2) == 0))
-}
-```
-
 ```{r, echo=FALSE, fig.width=5, fig.height=5}
 dir.create("clam_runs")
 dir.create("clam_runs/Example")
-clam(ask=FALSE, coredir=".")
+# clam(ask=FALSE, coredir=".")
 ```
 
 `clam` will calibrate any C-14 dates, sample the age estimates, draw curves, calculate age ranges, produce graphs and provide information about the confidence ranges. The output graph, above, contains: the calibrated distributions in blue (and a green/blue cal BP for the core's surface), the age-depth model's 95% ranges (grey envelope) and its mean (black curve). Besides the graph, clam also produces files containing age estimates (95% ranges and the mean) for each depth (by default every cm from the top to the bottom core depth). This file can be found in the core's folder, together with files giving the calibrated ranges for the dated depths.
@@ -80,7 +50,7 @@ clam(type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
 ```
 
 ```{r, fig.width=5, fig.height=5}
-clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
+# clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250), coredir=".")
 ```
 
 ***
