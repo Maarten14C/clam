@@ -328,10 +328,8 @@ then a "best" estimate, and finally the reconstructed accumulation rates. The re
 see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 }
 \examples{
-  mydir <- tempfile("my_clam_folder")
-  dir.create(mydir)
-  clam(, coredir=mydir) # Create the example in Cores/Example folder
-  clam(, coredir=mydir, extradates=470)
+  clam() 
+  clam(, extradates=470)
 
 }
 \references{
