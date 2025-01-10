@@ -15,7 +15,7 @@ vignette: >
 install.packages('clam')
 ``` 
 
-To use `clam`, first the package has to be loaded (this will also load its companion packages `rice` and `rintcal` which deal with radiocarbon calibration):
+The above command will also download the companion packages `rice` and `rintcal`, which deal with radiocarbon calibration aspects. To use `clam`, first the package has to be loaded:
 
 ```{r}
 library(clam)
@@ -27,10 +27,11 @@ The package comes with a pre-loaded dataset, called `Example`. Let's start by ru
 clam()
 ```
 
-
-
 ```{r, echo=FALSE, fig.width=5, fig.height=5}
-clam(, ask=FALSE)
+base_temp_dir <- tempdir()
+clam_dir <- file.path(base_temp_dir, "clam_runs")
+dir.create(clam_dir, recursive = TRUE, showWarnings = FALSE)
+clam(, ask=FALSE, coredir=clam_dir)
 ```
 
 `clam` will calibrate any C-14 dates, sample the age estimates, draw curves, calculate age ranges, produce graphs and provide information about the confidence ranges. The output graph, above, contains: the calibrated distributions in blue (and a green/blue cal BP for the core's surface), the age-depth model's 95% ranges (grey envelope) and its mean (black curve). Besides the graph, clam also produces files containing age estimates (95% ranges and the mean) for each depth (by default every cm from the top to the bottom core depth). This file can be found in the core's folder, together with files giving the calibrated ranges for the dated depths.
@@ -50,7 +51,7 @@ clam(type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
 ```
 
 ```{r, fig.width=5, fig.height=5}
-clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250))
+clam(ask=FALSE, type=4, outliers=6, hiatus=470, dmax=800, slump=c(220, 250), coredir=clam_dir)
 ```
 
 ***
