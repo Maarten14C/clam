@@ -239,33 +239,43 @@
 # If coredir is left empty, check for a folder named Cores in the current working directory, and if this doesn't exist, for a folder called clam_runs (make this folder if it doesn't exist yet and if the user agrees).
 # Check if we have write access. If not, tell the user to provide a different, writeable location for coredir.
 assign_coredir <- function(coredir, core, ask=TRUE) {
+  # If coredir is not provided, check for default directories
   if(length(coredir) == 0) {
-    if(dir.exists("Cores"))
-      coredir <- "Cores" else
-        if(dir.exists("clam_runs"))
-          coredir <- "clam_runs" else {
-            coredir <- "clam_runs"
-            if(!ask)
-              ans <- "y" else
-            ans <- readline(paste0("I will create a folder called ", coredir, ", is that OK? (y/n)  "))
-            if(tolower(substr(ans,1,1)) == "y")
-              wdir <- dir.create(coredir, FALSE) else
-                stop("No problem. Please provide an alternative folder location using coredir\n")
-            if(!wdir)
-              stop("Cannot write into the current directory.\nPlease set coredir to somewhere where you have writing access, e.g. Desktop or ~.")
-        }
-  } else {
-      if(!dir.exists(coredir))
+    if(dir.exists("Cores")) {
+      coredir <- "Cores"
+    } else if(dir.exists("clam_runs")) {
+      coredir <- "clam_runs"
+    } else {
+      coredir <- "clam_runs"
+      if(!ask) {
+        ans <- "y"
+      } else {
+        ans <- readline(paste0("I will create a folder called ", coredir, ", is that OK? (y/n)  "))
+      }
+      if(tolower(substr(ans, 1, 1)) == "y") {
         wdir <- dir.create(coredir, FALSE)
-      if(!dir.exists(coredir)) # if it still doesn't exist, we probably don't have enough permissions
+      } else {
+        stop("No problem. Please provide an alternative folder location using coredir\n")
+      }
+      if(!wdir) {
         stop("Cannot write into the current directory.\nPlease set coredir to somewhere where you have writing access, e.g. Desktop or ~.")
+      }
     }
+  } else {
+    # Create the provided coredir if it does not exist
+    if(!dir.exists(coredir)) {
+      wdir <- dir.create(coredir, FALSE)
+    }
+    # If directory creation fails, stop execution
+    if(!dir.exists(coredir)) {
+      stop("Cannot write into the current directory.\nPlease set coredir to somewhere where you have writing access, e.g. Desktop or ~.")
+    }
+  }
+  # Validate the directory name
   coredir <- .validateDirectoryName(coredir)
   message("The run's files will be put in this folder: ", coredir, core)
   return(coredir)
 }
-
-
 
 # list the available cores
 clam_runs <- list.files("clam_runs/")
