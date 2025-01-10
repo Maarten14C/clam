@@ -167,10 +167,8 @@
 #' @author Maarten Blaauw
 #' @return Age model construction together with a text output and files saved to a folder in the \code{coredir/core} directory.
 #' @examples 
-#'   mydir <- tempfile("my_clam_folder")
-#'   dir.create(mydir)
-#'   clam(, coredir=mydir) # Create the example in Cores/Example folder
-#'   clam(, coredir=mydir, extradates=470)
+#'   clam() 
+#'   clam(, extradates=470)
 #' 
 #' @references
 #' Berrio, J.C., Hooghiemstra, H., Marchant, R., Rangel, O., 2002. Late-glacial and Holocene history of the dry forest area 
