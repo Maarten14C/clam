@@ -328,8 +328,8 @@ then a "best" estimate, and finally the reconstructed accumulation rates. The re
 see Blaauw 2010 (Quaternary Geochronology 5: 512-518).
 }
 \examples{
-  clam() 
-  clam(, extradates=470)
+  clam(, ask=FALSE) 
+  clam(, ask=FALSE, extradates=470)
 
 }
 \references{
