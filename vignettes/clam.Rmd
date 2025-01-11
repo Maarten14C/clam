@@ -41,7 +41,7 @@ clam()
 
 # dir <- suppressWarnings(normalizePath(dir, winslash = "/", mustWork = FALSE))
 
-ccdir <- ""
+ccdir <- "poop"
 ccdir <- .validateDirectoryName(ccdir)  
 ```
 
