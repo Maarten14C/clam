@@ -32,12 +32,14 @@ clam()
 .validateDirectoryName <- function(dir) {
   if(!dir.exists(dir))
     dir.create(dir, showWarnings=FALSE, recursive=TRUE)
-  dir <- suppressWarnings(normalizePath(dir))
+  dir <- suppressWarnings(normalizePath(dir, winslash = "/", mustWork = FALSE))
   lastchar <- substr(dir, nchar(dir), nchar(dir))
   if(lastchar != "/" & lastchar != "\\" & lastchar != "" & lastchar != "." )
     dir <- paste0(dir, "/") # does this work in Windows?
   return(dir)
 }
+
+# dir <- suppressWarnings(normalizePath(dir, winslash = "/", mustWork = FALSE))
 
 ccdir <- ""
 ccdir <- .validateDirectoryName(ccdir)  
