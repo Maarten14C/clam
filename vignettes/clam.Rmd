@@ -52,6 +52,7 @@ if(core == "Example") {
     file.rename(file.path(coredir, core, paste0(core, ".csv.txt")),
       file.path(coredir, core, "/", paste0(core, ".csv")))
   }
+  ccdir <- ""
   ccdir <- clam:::.validateDirectoryName(ccdir)
   
   
