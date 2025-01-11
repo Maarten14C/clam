@@ -2,6 +2,12 @@
 # kept calib.t() and .caldist() Aug 2021
 # removed calib.t() Jan 2025, since it is in `rice` already
 
+
+# See Christen and Perez 2009, Radiocarbon 51:1047-1059. Instead of assuming the standard Gaussian model (default in clam), a student t distribution can be used with two parameters. Christen and Perez 2009 suggest t.a = 3 and t.b = 4; this can be put as clam( calibt=c(3,4) )
+.calibt <- function(t.a, t.b, f.cage, f.error, f.mu, f.sigma) # removed theta as par
+  (t.b + ((f.cage-f.mu)^2) / (2*(f.sigma^2 + f.error^2))) ^ (-1*(t.a+0.5))
+
+
 # find the calibrated distributions of 14C dates
 .caldist <- function(f.cage, f.error, theta, f.mu, f.sigma, yrsteps, threshold, calibt, BCAD, normalise=FALSE, rule=rule) {
     if(f.cage > 1) {
