@@ -1,5 +1,5 @@
 ## Test environments
-* local Fedora linux 40, R 4.4.1
+* local Fedora linux 40, R 4.4.2
 * win-devel
 
 ## R CMD check results
