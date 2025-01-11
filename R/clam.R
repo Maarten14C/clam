@@ -213,9 +213,9 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   }
 
   # set the calibration curve
-  ccdir <- .validateDirectoryName(ccdir)
-  if(ccdir == "") # so, if no alternative folder provided, use clam's calibration curves
-    ccdir = system.file("extdata", package="rintcal")
+  if(ccdir == "") 
+    ccdir = system.file("extdata", package="rintcal") else
+      ccdir <- .validateDirectoryName(ccdir)
   if(cc==1) calcurve <- read.table(file.path(ccdir, cc1)) else
     if(cc==2) calcurve <- read.table(file.path(ccdir, cc2)) else
       if(cc==3) calcurve <- read.table(file.path(ccdir, cc3)) else

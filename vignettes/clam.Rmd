@@ -41,7 +41,7 @@ clam()
 
 # dir <- suppressWarnings(normalizePath(dir, winslash = "/", mustWork = FALSE))
 
-ccdir <- "poop"
+ccdir <- "poop" # is this the zero-length culprit? was ""
 ccdir <- .validateDirectoryName(ccdir)  
 ```
 
