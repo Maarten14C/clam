@@ -26,7 +26,10 @@ so, make sure the option \code{storedat=TRUE}.
 Renamed from previous accrate.age function to avoid confusion with accrate.age function of rbacon.
 }
 \examples{
-  clam(, storedat=TRUE)
+  base_temp_dir <- tempdir()
+  clam_dir <- file.path(base_temp_dir, "clam_runs")
+  dir.create(clam_dir, recursive = TRUE, showWarnings = FALSE)
+  clam(coredir=clam_dir, storedat=TRUE)
   dp <- deptime.age(5000)
   summary(dp)
   deptime.age(5000, yrcm=FALSE) # to calculate sedimentation times in cm/yr, so accumulation rates

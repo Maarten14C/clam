@@ -27,7 +27,10 @@ so, make sure to set \code{storedat=TRUE}.
 Renamed from previous accrate.depth function to avoid confusion with accrate.depth function of rbacon.
 }
 \examples{
-  clam(storedat=TRUE)
+  base_temp_dir <- tempdir()
+  clam_dir <- file.path(base_temp_dir, "clam_runs")
+  dir.create(clam_dir, recursive = TRUE, showWarnings = FALSE)
+  clam(coredir=clam_dir, storedat=TRUE)
   dp <- deptime.depth(20)
   summary(dp)
   deptime.depth(20, FALSE) # to calculate accumulation rates in cm/yr

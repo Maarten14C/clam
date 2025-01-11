@@ -26,7 +26,10 @@ Only works after running clam on the core using \code{proxies=TRUE}. Requires a 
 and any proxy values on subsequent columns. Values should be separated by comma's. The file should be stored as a .csv file in the core's directory.
 }
 \examples{
-  clam(,proxies=TRUE)
+  base_temp_dir <- tempdir()
+  clam_dir <- file.path(base_temp_dir, "clam_runs")
+  dir.create(clam_dir, recursive = TRUE, showWarnings = FALSE)
+  clam(coredir=clam_dir, proxies=TRUE)
   plot_proxies(3)
   plot_proxies(3, revyr=FALSE)
 }
