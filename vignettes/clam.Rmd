@@ -40,7 +40,7 @@ if(core == "Example") {
     fileCopy <- system.file("extdata/Example/", package="clam")
     file.copy(fileCopy, coredir, recursive = TRUE, overwrite=FALSE)
   } 
-  ext <- ".csv"
+  ext <- ".csv"; sep=","
   csvFile <- paste0(coredir, core, "/", core, ext)
   if(!file.exists(csvFile))
     stop(paste("\nInput data file", csvFile, "not found."), call.=FALSE)
