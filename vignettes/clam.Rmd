@@ -28,34 +28,8 @@ clam()
 ```
 
 ```{r, echo=FALSE, fig.width=5, fig.height=5}
-base_temp_dir <- tempdir()
-coredir <- file.path(base_temp_dir, "clam_runs")
-dir.create(coredir, recursive = TRUE, showWarnings = FALSE)
-coredir <- clam:::assign_coredir(coredir, core="Example", ask=FALSE)
-#clam(, ask=FALSE, coredir=coredir)
-
-core <- "Example"
-if(core == "Example") {
-    dir.create(file.path(coredir, "Example/"), showWarnings = FALSE, recursive = TRUE)
-    fileCopy <- system.file("extdata/Example/", package="clam")
-    file.copy(fileCopy, coredir, recursive = TRUE, overwrite=FALSE)
-  } 
-  ext <- ".csv"; sep=","
-  csvFile <- paste0(coredir, core, "/", core, ext)
-  if(!file.exists(csvFile))
-    stop(paste("\nInput data file", csvFile, "not found."), call.=FALSE)
-  dets <- read.csv(csvFile, sep=sep)
-  
-  bill <- list.files(file.path(coredir, core), pattern=".csv.txt")
-  if(length(bill) > 0) {
-    message("Removing unnecessary .txt extension from .csv file", bill[1])
-    file.rename(file.path(coredir, core, paste0(core, ".csv.txt")),
-      file.path(coredir, core, "/", paste0(core, ".csv")))
-  }
-#  ccdir <- ""
-#  ccdir <- clam:::.validateDirectoryName(ccdir)
-  
-  
+ccdir <- ""
+ccdir <- clam:::.validateDirectoryName(ccdir)  
 ```
 
 ```{r, echo=FALSE, fig.width=5, fig.height=5}
