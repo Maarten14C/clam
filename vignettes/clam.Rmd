@@ -25,7 +25,7 @@ The package comes with a pre-loaded dataset, called `Example`. Let's start by ru
 
 ```{r}
 mydir <- tempfile()
-coredir <- clam:::assign_coredir(mydir, core, ask)
+coredir <- clam:::assign_coredir(mydir, core="Example", ask=FALSE)
 coredir
 ```
 
