@@ -23,13 +23,6 @@ library(clam)
 
 The package comes with a pre-loaded dataset, called `Example`. Let's start by running this default core, using all default settings. Note R's comments about where the files are going to be placed, as we will need this information later. Press `y` and/or `Enter` to accept any suggestions about where it will place files, or alternatively provide a folder location using the option `coredir`.
 
-```{r}
-mydir <- tempfile()
-coredir <- clam:::assign_coredir(mydir, core="Example", ask=FALSE)
-coredir
-```
-
-
 ```{r, eval=FALSE}
 clam()
 ```
@@ -38,6 +31,7 @@ clam()
 base_temp_dir <- tempdir()
 clam_dir <- file.path(base_temp_dir, "clam_runs")
 dir.create(clam_dir, recursive = TRUE, showWarnings = FALSE)
+coredir <- clam:::assign_coredir(clam_dir, core="Example", ask=FALSE)
 clam(, ask=FALSE, coredir=clam_dir)
 ```
 
