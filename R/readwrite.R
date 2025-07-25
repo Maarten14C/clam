@@ -3,9 +3,9 @@
 .read.clam <- function(name, namedir, ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb, rule=1) {
   coredir=paste0(namedir, name, "/")
   if(!file.exists(paste0(namedir, name)))
-    stop(paste0("\n\n Warning, cannot find a folder within", namedir," named ", name, ". Have you saved it in the right place and with the right name? Please check the manual\n\n"), call.=FALSE)
+    stop(paste0("Warning, cannot find a folder within", namedir," named ", name, ". Have you saved it in the right place and with the right name? Please check the manual"), call.=FALSE)
   if(!file.exists(paste0(coredir, name, ext)))
-    stop(paste0(" \n\n Warning, cannot find file ", name, ".csv in folder",namedir, name, ". Have you saved it in the right place and named it correctly? Please check the manual\n\n"), call.=FALSE)
+    stop(paste0("Warning, cannot find file ", name, ".csv in folder",namedir, name, ". Have you saved it in the right place and named it correctly? Please check the manual"), call.=FALSE)
   dets <- suppressWarnings(read.table(paste0(coredir, name, ext), comment.char="", header=TRUE, sep=sep, na.strings = c("#N/A!", "NA", "@NA")))
 
   # read the file with the dating information
@@ -42,11 +42,11 @@
   x <- 0
   for(i in 2:7) if(is.factor(dets[,i])) x <- 1
   if(x == 1)
-    stop(paste0("\n Some value fields in ", name, ".csv contain letters, please adapt"), call.=FALSE)
+    stop(paste0("Some value fields in ", name, ".csv contain letters, please adapt"), call.=FALSE)
   if(length(dets[is.na(dets[,2]),2])+length(dets[is.na(dets[,3]),3]) != nrow(dets))
-    stop(paste0("\n Remove duplicate entries within the C14 and calendar fields in ", name, ".csv"), call.=FALSE)
+    stop(paste0("Remove duplicate entries within the C14 and calendar fields in ", name, ".csv"), call.=FALSE)
   if(min(dets[,4]) <= 0)
-    stop(paste0("\n Errors of dates should be larger than zero. Please adapt ", name, ".csv"), call.=FALSE)
+    stop(paste0("Errors of dates should be larger than zero. Please adapt ", name, ".csv"), call.=FALSE)
   dat$ID <- as.character(dets[,1])
 
   # correct for any reservoir effect
@@ -71,13 +71,13 @@
         dat$cage[outside[i]]+times*dat$error[outside[i]] > rangecc[2]))
           truncate <- truncate + 1
     if(truncate > 0)
-      message("\n Warning, some dates lie partly outside the calibration curve! ")
+      message("Warning, some dates lie partly outside the calibration curve!")
 
     # remove dates which lie entirely outside the limits of the calibration curve
     outside <- outside[c(which(dat$cage[outside]+qnorm(1-(1-prob)/2)*dat$error[outside] < rangecc[1]), which(dat$cage[outside]-qnorm(1-(1-prob)/2)*dat$error[outside] > rangecc[2]))]
     if(length(outside) > 0) { # should this be removed?
       outside <- 0 # tmp
-      message("\n Warning, some dates lie entirely outside the calibration curve! ")
+      message("Warning, some dates lie entirely outside the calibration curve!")
       dets <- dets[-outside,]
       dat$cage <- dat$cage[-outside]
       dat$error <- dat$error[-outside]
@@ -119,7 +119,9 @@
     dat$calib[[i]] <- calib
     #dat$hpd[[i]] <- .hpd(calib, prob=prob, hpdsteps=hpdsteps, yrsteps=yrsteps, rule=rule)
     dat$hpd[[i]] <- rice::hpd(calib, prob=prob) # new Aug 2021
-    dat$mid1[i] <- (dat$hpd[[i]][1] + dat$hpd[[i]][2*nrow(dat$hpd[[i]])])/2
+	rng <- range(dat$hpd[[i]][,1:2]) # new July 2025
+	dat$mid[i] <- (rng[1]+rng[2])/2 # new July 2025
+    #dat$mid1[i] <- (dat$hpd[[i]][1] + dat$hpd[[i]][2*nrow(dat$hpd[[i]])])/2
     yrs <- calib[,1]
     dat$mid2[i] <- mean(c(max(yrs), min(yrs)))
     dat$wmn[i] <- weighted.mean(calib[,1], 1/calib[,2])
@@ -247,30 +249,23 @@ assign_coredir <- function(coredir, core, ask=TRUE) {
       coredir <- "clam_runs"
     } else {
       coredir <- "clam_runs"
-      if(!ask) {
-        ans <- "y"
-      } else {
-        ans <- readline(paste0("I will create a folder called ", coredir, ", is that OK? (y/n)  "))
-      }
+      ans <- if (!ask) "y" else readline(paste0("I will create a folder called ", coredir, ", is that OK? (y/n)  "))
+
       if(tolower(substr(ans, 1, 1)) == "y") {
-        wdir <- dir.create(coredir, FALSE)
+        if(!dir.create(coredir, FALSE)) {
+          stop("Cannot create the directory.\nPlease set coredir to a location where you have write access, e.g., Desktop or ~.")
+        }
       } else {
         stop("No problem. Please provide an alternative folder location using coredir\n")
       }
-      if(!wdir) {
-        stop("Cannot write into the current directory.\nPlease set coredir to somewhere where you have writing access, e.g. Desktop or ~.")
-      }
     }
   } else {
-    # Create the provided coredir if it does not exist
-    if(!dir.exists(coredir)) {
-      wdir <- dir.create(coredir, FALSE)
-    }
-    # If directory creation fails, stop execution
-    if(!dir.exists(coredir)) {
-      stop("Cannot write into the current directory.\nPlease set coredir to somewhere where you have writing access, e.g. Desktop or ~.")
+    # If coredir exists or can be created
+    if(!dir.exists(coredir) && !dir.create(coredir, FALSE)) {
+      stop("Cannot create or write into the directory.\nPlease set coredir to a location where you have write access, e.g., Desktop or ~.")
     }
   }
+
   # Validate the directory name
   coredir <- .validateDirectoryName(coredir)
   message("The run's files will be put in this folder: ", coredir, core)

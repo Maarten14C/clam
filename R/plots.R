@@ -85,15 +85,17 @@
           rect(dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,1], dat$depth[i]+dat$thick[i]/2, dat$hpd[[i]][j,2], lwd=1, lend=2, col=col, border=NA) else
             rect(dat$hpd[[i]][j,1], dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,2], dat$depth[i]+dat$thick[i]/2, lwd=1, lend=2, col=col, border=NA)
     }
-    if(length(outliers) >0 ) {
+
+    if(length(outliers) > 0 ) {
       for(i in outliers)
         for(j in 1:nrow(dat$hpd[[i]]))
-          if(revaxes)
-            rect(dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,1], dat$depth[i]+dat$thick[i]/2, dat$hpd[[i]][j,2], col=outcol, border=outcol, lwd=1, lend=2) else
-              rect(dat$hpd[[i]][j,1], dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,2], dat$depth[i]+dat$thick[i]/2, col=outcol, border=outcol, lwd=1, lend=2)
-        if(revaxes)
-          points(dat$depth[outliers], dat$mid1[outliers], cex=outlsize, pch=4, col=outcol) else
-            points(dat$mid1[outliers], dat$depth[outliers], cex=outlsize, pch=4, col=outcol)
+          if(!is.null(dat$hpd[[i]]))
+            if(revaxes)
+              rect(dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,1], dat$depth[i]+dat$thick[i]/2, dat$hpd[[i]][j,2], col=outcol, border=outcol, lwd=1, lend=2) else
+                rect(dat$hpd[[i]][j,1], dat$depth[i]-dat$thick[i]/2, dat$hpd[[i]][j,2], dat$depth[i]+dat$thick[i]/2, col=outcol, border=outcol, lwd=1, lend=2)
+      if(revaxes)
+        points(dat$depth[outliers], dat$mid[outliers], cex=outlsize, pch=4, col=outcol) else
+          points(dat$mid[outliers], dat$depth[outliers], cex=outlsize, pch=4, col=outcol)
     }
   }
 
@@ -136,7 +138,7 @@
 #'   clam(, coredir=clam_dir, ask=FALSE)
 #'   add.dates(5000, 100, 60)
 #' @export
-add.dates <- function(mn, sdev, depth, cc=1, above=1e-3, exx=50, normal=TRUE, normalise=TRUE, t.a=3, t.b=4, age.res=100, times=20, col=rgb(1,0,0,.5), border=rgb(1,0,0,.5), rotate.axes=FALSE, mirror=TRUE, up=TRUE, BCAD=FALSE)  {
+add.dates <- function(mn, sdev, depth, cc=1, above=1e-3, exx=50, normal=TRUE, normalise=TRUE, t.a=3, t.b=4, age.res=100, times=20, col=rgb(1,0,0,.5), border=rgb(1,0,0,.5), rotate.axes=FALSE, mirror=TRUE, up=TRUE, BCAD=FALSE) {
   if(cc > 0)
     cc <- rintcal::ccurve(cc) # was ccurve(cc) Sep 2024
   

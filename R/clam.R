@@ -3,9 +3,6 @@
 
 # done: 
 
-# so that functions such as pMC.age etc. are available immediately
-# library(rice)
-
 #' @name clam
 #' @title The main age-depth modelling function
 #' @description Produce age-depth models for cores with dated depths.
@@ -193,7 +190,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
 
   # warn and stop if unexpected settings are provided
   if(type > 5 || type < 1 || prob < 0 || prob > 1 || its < 100 || wghts < 0 || wghts > 1 || est < 1 || est > 7 || yrsteps <= 0 || hpdsteps <= 0 || every <= 0 || decimals < 0 || cmyr < 0 || cmyr > 1 || thickness < 0 || times < 1 || calhght < 0 || (type==5 && length(hiatus)>0))
-    stop("\n Warning, clam cannot run with these settings! Please check the manual.\n\n", call.=FALSE)
+    stop("Warning, clam cannot run with these settings! Please check the manual.", call.=FALSE)
 
   csvFile <- paste0(coredir, core, "/", core, ext)
   if(!file.exists(csvFile))
@@ -202,7 +199,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   d <- dets[,6]
   these <- 1:length(d) # to possibly kick out dates later on; Nov 2020
   if(min(diff(d)) < 0)
-    message(" Warning, depths not in ascending order (top ones should come first).")
+    message("Warning, depths not in ascending order (top ones should come first).")
 
   # avoid Windows/Mac habit of silently adding .txt extension to plain text files
   bill <- list.files(file.path(coredir, core), pattern=".csv.txt")
@@ -263,7 +260,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   if(length(greyscale) > 0) storedat <- TRUE
   if(length(slump) > 0) {
     if(length(slump) %% 2 == 1)
-      stop("\n Warning, slumps need both upper and lower depths. Please check the manual", call.=FALSE)
+      stop("Warning, slumps need both upper and lower depths. Please check the manual", call.=FALSE)
     slump <- matrix(sort(slump), ncol=2, byrow=TRUE)
     if(length(dmax)==0)
       dmax <- max(dets[,6])
@@ -283,7 +280,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
   }
   # read in the data
   dat <- .read.clam(core, coredir, ext, hpdsteps, yrsteps, prob, times, sep, BCAD, storedat, ignore, thickness, youngest, slump, threshold, theta, f.mu, f.sigma, calibt, extradates, calcurve, postbomb, rule=rule)
-  message(" Calibrating dates... ")
+  message("Calibrating dates...")
 
   # calculate the depths to be used, based on the ranges and resolution
   if(length(dmin)==0)
@@ -394,6 +391,7 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     yrmax <- max(dat$mid1, calrange[,3])
   if(length(ageofdepth > 0))
     layout(matrix(c(1,2,1,3), nrow=2), heights=c(.7,.3))
+
   .ageplot(yrmin, yrmax, dmin, dmax, revaxes, revd, revyr, yrlab, dlab, hiatus, depthseq, outliers, plotrange, BCAD, greyscale, if(length(greyscale)>0) get('chron') else NULL, C14col, outcol, outlsize, bestcol, rangecol, dat, calrange, depth, calhght, maxhght, mirror, calcol, slump, slumpcol, plotname, core, bty, mar, mgp, ash)
 
   # write files providing calibrated dates, age-model and settings
@@ -422,27 +420,26 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
     legend("topleft", paste(ageofdepth, depth), bty="n")
     layout(matrix(1))
     rng <- round(calrange[max(which(calrange[,1] <= ageofdepth)),])
-    message("  Age range of ", ageofdepth, " ", depth, ": ", rng[3], " to ", rng[2], ifelse(BCAD, " cal BC/AD", " cal BP"), " (", rng[3]-rng[2], " yr, ", prob, " % range)",  sep="")
+    message("Age range of ", ageofdepth, " ", depth, ": ", rng[3], " to ", rng[2], ifelse(BCAD, " cal BC/AD", " cal BP"), " (", rng[3]-rng[2], " yr, ", prob, " % range)",  sep="")
   }
 
   # report the confidence ranges, the goodness-of-fit, and whether any age-reversals occurred
   rng <- round(calrange[,3]-calrange[,2])
-  message("\n", core, "'s ", 100*prob, "% confidence ranges span from ", min(rng), " to ", max(rng), " yr (average ", round(mean(rng)), " yr)")
-  message("  Fit (-log, lower is better): ", gfit)
+  message(core, "'s ", 100*prob, "% confidence ranges span from ", min(rng), " to ", max(rng), " yr (average ", round(mean(rng)), " yr)")
+  message("Fit (-log, lower is better): ", gfit)
   if(reversal) 
-    message("  Age reversals occurred. Try other model?\n")
+    message("Age reversals occurred. Try other model?")
 }
 
 
 
 # calculate the age-depth model and its uncertainty
-.model.clam <- function(type, smooth, its, wghts, depths, errors, depthseq, prob, est, dat, smp, greyscale, remove.reverse, storedat, ageofdepth, BCAD)
-  {
+.model.clam <- function(type, smooth, its, wghts, depths, errors, depthseq, prob, est, dat, smp, greyscale, remove.reverse, storedat, ageofdepth, BCAD) {
     # warn for extrapolation, refuse to do so for loess
     if(min(depthseq) < min(dat$depth) || max(depthseq) > max(dat$depth))
       if(type==5)
-        stop(" cannot extrapolate using loess! Change settings.\n ", call.=FALSE) else
-          cat(" extrapolating beyond dated levels, dangerous!\n ")
+        stop("cannot extrapolate using loess! Change settings.", call.=FALSE) else
+          message("extrapolating beyond dated levels, dangerous!")
 
     # choose model: interpolation, (polynomial) regression, spline, smooth spline or loess
     chron <- array(0, dim=c(length(depthseq), its))
@@ -461,37 +458,34 @@ clam <- function(core="Example", type=1, smooth=NULL, prob=0.95, its=1000, cored
           warp <- c(warp, i)
     if(length(warp) > 0)
       if(length(warp) > remove.reverse*its)
-        message("\n !!! Too many models with age reversals!!!\n") else
-          {
-            message("\n Removing ", length(warp), " models with age reversals, ", its-length(warp), " models left...")
+        message("!!! Too many models with age reversals!!!") else {
+            message("Removing ", length(warp), " models with age reversals, ", its-length(warp), " models left...")
             chron <- chron[,-warp]
             smp <- smp[,-warp,]
-          }
+        }
 
     if(length(ageofdepth) > 0)
       if(ageofdepth %in% depthseq)
         .assign_to_global(".ageofdepth", chron[which(depthseq==ageofdepth),]) 
 
-    if(storedat)
-      {
+    if(storedat) {
         chron <<- chron
         smp <<- smp
-      }
+    }
 
     # find uncertainty ranges of calendar age for each depth of the core
     calrange <- array(0, dim=c(nrow(chron), 2))
     # mn <- c()
     mn <- numeric(nrow(chron))
-    for(i in 1:nrow(chron))
-      {
+    qp <- (1-prob)/2
+    for(i in 1:nrow(chron)) {
         x <- chron[i,2:ncol(chron)]
-        qp <- (1-prob)/2
         calrange[i,] <- quantile(x, c(qp, 1-qp))
         if(est==1) mn[i] <- mean(x)
-      }
+    }
     if(est==1)
       cbind(depthseq, cbind(calrange, mn)) else
         cbind(depthseq, cbind(calrange, chron[,1]))
-  }
+}
 
 

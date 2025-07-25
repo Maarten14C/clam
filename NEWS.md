@@ -1,10 +1,14 @@
+# clam 2.6.3
+* updated how hpd ranges are calculated (using the `rice::hpd` function)
+* cleaner formatting of the output messages
+
 # clam 2.6.2
 * changed the use of tempdir() in documentation examples (to avoid Errors on CRAN package checks)
 * linking to updated rice and rintcal
 * removed the calib.t function since it is now in `rice`
 
 # clam 2.6.1
-* further steps in separating 'rice' from 'rintcal' within 'clam'
+* further steps in separating `rice` from `rintcal` within `clam`
 
 # clam 2.6.0
 * now uses the 'rintcal' package for loading calibration curves, and 'rice' for additional radiocarbon/calibration functions

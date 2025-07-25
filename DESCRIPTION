@@ -1,7 +1,7 @@
 Package: clam
 Type: Package
 Title: Classical Age-Depth Modelling of Cores from Deposits
-Version: 2.6.2
+Version: 2.6.3
 Authors@R: c(
   person("Maarten", "Blaauw", email = "maarten.blaauw@qub.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5680-1515")),
   person("J. Andres", "Christen", role = "ctb", comment = c(ORCID = "0000-0002-5795-4345")),
@@ -10,8 +10,7 @@ Authors@R: c(
 Description: Performs 'classical' age-depth modelling of dated sediment deposits - prior to applying more sophisticated techniques such as Bayesian age-depth modelling. Any radiocarbon dated depths are calibrated. Age-depth models are constructed by sampling repeatedly from the dated levels, each time drawing age-depth curves. Model types include linear interpolation, linear or polynomial regression, and a range of splines. See Blaauw (2010) <doi:10.1016/j.quageo.2010.01.002>.
 License: GPL (>= 2)
 Language: en-GB
-Imports: grDevices, graphics, stats, utils, data.table, rintcal (>= 1.1.1)
-Depends: rice (>= 1.0.0)
+Imports: grDevices, graphics, stats, utils, data.table, rintcal (>= 1.3.0), rice (>= 1.3.0)
 RoxygenNote: 7.3.2
 Suggests: knitr, rmarkdown, utf8
 VignetteBuilder: knitr

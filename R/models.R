@@ -12,9 +12,11 @@
   return(smp)
 }
 
+
+
 # akin to Heegaard et al.'s mixed effect modelling, but using calibrated dates
 .mixed.effect <- function(its, depths, cals, cages, errors, calibs, Est, theta, f.mu, f.sigma, yrsteps, calibt) {
-    cat("\n Mixed effect modelling, this will take some time")
+    message("Mixed effect modelling, this will take some time")
     smp <- array(1, dim=c(length(depths), 1+its, 2))
     smp[,1,1] <- Est
     for(i in 1:length(cals))
@@ -33,7 +35,7 @@
           }
       } else
          for(j in 1:its) {
-           if(j/(its/3) == round(j/(its/3))) cat(".")
+          # if(j/(its/3) == round(j/(its/3))) cat(".")
            yr <- rnorm(1, cages[i], errors[i])
            f.yr <- exp(-yr/8033)
            f.error <- f.yr - exp(-(yr+errors[i])/8033)
@@ -47,9 +49,10 @@
 }
 
 
+
 # interpolate linearly between the data (default)
 .interp <- function(depthseq, depths, its, chron, smp) {
-  cat(" Interpolating, sampling")
+  message("Interpolating, sampling")
   for(i in 1:its) {
     temp <- approx(depths, smp[,i,1], depthseq, ties=mean)$y
 
@@ -65,67 +68,73 @@
       temp[maxim] <- temp[min(maxim)-1] + slope * (depthseq[maxim] - max(depths))
     }
     chron[,i] <- temp
-    if(i/(its/5) == round(i/(its/5))) cat(".")
+    #if(i/(its/5) == round(i/(its/5))) cat(".")
   }
   return(chron)
 }
+
 
 
 # polynomial regressions of certain order through the data (default linear, y=ax+b)
 .poly <- function(depthseq, smooth, wghts, errors, depths, its, chron, smp) {
   if(length(smooth)==0)
-    message(" Using linear regression, sampling") else
+    message("Using linear regression, sampling") else
       message(paste0(" Using polynomial regression (degree ", smooth, "), sampling"))
   if(wghts==0) w <- NULL else w <- 1/errors^2
   for(i in 1:its) {
     if(wghts==1) w <- smp[,i,2]
     chron[,i] <- predict(lm(smp[,i,1] ~ poly(depths, max(1, smooth)), weights=w), data.frame(depths=depthseq))
-    if(i/(its/5) == round(i/(its/5))) cat(".")
+    #if(i/(its/5) == round(i/(its/5))) cat(".")
   }
   return(chron)
 }
+
 
 
 # fit cubic spline interpolations through the data
 .spline <- function(depthseq, smooth, depths, its, chron, smp) {
   if(length(smooth) < 1) smooth <- .3
-  message(" Using cubic spline sampling")
+  message("Using cubic spline sampling")
   for(i in 1:its) {
     chron[,i] <- spline(depths, smp[,i,1], xout=depthseq)$y
-    if(i/(its/5) == round(i/(its/5))) cat(".")
+    #if(i/(its/5) == round(i/(its/5))) cat(".")
   }
   return(chron)
 }
+
 
 
 # fit cubic smoothed splines through the data, with smoothing factor
 .smooth <- function(depthseq, smooth, wghts, errors, depths, its, chron, smp) {
   if(length(smooth) < 1) smooth <- .3
-  message(paste0(" Using smoothing spline (smoothing ", smooth, "), sampling"))
+  message(paste0("Using smoothing spline (smoothing ", smooth, "), sampling"))
   #if(wghts==0) w <- c() else w <- 1/errors^2
   if(wghts==0) w <- NULL else w <- 1/errors^2
   for(i in 1:its) {
     if(wghts==1) w <- smp[,i,2]
     chron[,i] <- predict(smooth.spline(depths, smp[,i,1], w=w, spar=smooth), depthseq)$y
-    if(i/(its/5) == round(i/(its/5))) cat(".")
+    #if(i/(its/5) == round(i/(its/5))) cat(".")
   }
   return(chron)
 }
+
 
 
 # fit locally weighted (1/errors^2) splines through the data, with smoothing factor
 .loess <- function(depthseq, smooth, wghts, errors, depths, its, chron, smp) {
   if(length(smooth) < 1) smooth <- .75
-  message(paste0(" Using loess (smoothing ", smooth, "), sampling"))
+  message(paste0("Using loess (smoothing ", smooth, "), sampling"))
   #if(wghts==0) w <- c() else w <- 1/errors^2
   if(wghts==0) w <- NULL else w <- 1/errors^2
   for(i in 1:its) {
     if(wghts==1) w <- smp[,i,2]
     chron[,i] <- predict(loess(smp[,i,1] ~ depths, weights=w, span=smooth), depthseq)
-    if(i/(its/5) == round(i/(its/5))) cat(".")
+    #if(i/(its/5) == round(i/(its/5))) cat(".")
   }
   return(chron)
 }
+
+
 
 # calculate goodness-of-fit (small number, so calculate its -log)
 .gfit <- function(theta, f.mu, f.sigma, dat, calrange, outliers) {
