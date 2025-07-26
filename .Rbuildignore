@@ -6,5 +6,6 @@
 ^cran-comments.md.kate-swp$
 ^\.git$
 ^\.github$
-^\.DS_Store$
+^.*/\.DS_Store$
+\.DS_Store$
 ^clam_runs$

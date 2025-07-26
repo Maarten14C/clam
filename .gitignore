@@ -3,5 +3,9 @@
 
 .Rhistory
 .RData
+
+*.kate-swp
 .DS_Store
+*/.DS_Store
+**/.DS_Store
 .cran-comments.md.kate-swp

@@ -1,9 +1,8 @@
 ## Test environments
-* local Fedora linux 40, R 4.4.2
-* win-devel
+* local Mac and Fedora linux 42, R 4.5.1
+* win and ubuntu through rhub
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
 
-The previous NOTE on Debian regarding non-standard things in the check directory has been addressed. Apologies for the oversight.
